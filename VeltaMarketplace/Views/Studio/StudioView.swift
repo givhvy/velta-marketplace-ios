@@ -43,7 +43,7 @@ struct StudioView: View {
     }
 
     private var studioHero: some View {
-        ZStack(alignment: .bottomLeading) {
+        ZStack(alignment: .bottom) {
             LinearGradient(
                 colors: [
                     Color(red: 0.08, green: 0.42, blue: 0.72),
@@ -53,27 +53,68 @@ struct StudioView: View {
                 startPoint: .topLeading,
                 endPoint: .bottom
             )
-            .frame(height: 148)
-            .overlay(alignment: .topTrailing) {
-                Circle()
-                    .fill(Color.white.opacity(0.08))
-                    .frame(width: 120, height: 120)
-                    .blur(radius: 2)
-                    .offset(x: 24, y: -20)
-            }
+            .frame(height: 160)
 
-            VStack(alignment: .leading, spacing: 6) {
-                Text(app.auth.user?.name ?? "Velta Beats")
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(.white)
-                Text("Producer dashboard")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.72))
+            HStack(alignment: .bottom, spacing: 16) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(app.auth.user?.name ?? "Velta Beats")
+                        .font(.title2.weight(.bold))
+                        .foregroundStyle(.white)
+                    Text("Producer dashboard")
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.72))
+                }
+
+                Spacer(minLength: 12)
+
+                studioAvatar
             }
             .padding(.horizontal, gutter)
             .padding(.bottom, 18)
         }
     }
+
+    private var studioAvatar: some View {
+        AsyncImage(url: Self.mockAvatarURL) { phase in
+            switch phase {
+            case .success(let image):
+                image
+                    .resizable()
+                    .scaledToFill()
+            case .failure:
+                studioAvatarFallback
+            default:
+                ProgressView()
+                    .tint(.white)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.white.opacity(0.08))
+            }
+        }
+        .frame(width: 72, height: 72)
+        .clipShape(Circle())
+        .overlay(
+            Circle()
+                .strokeBorder(Color.white.opacity(0.28), lineWidth: 2)
+        )
+        .shadow(color: .black.opacity(0.35), radius: 10, y: 4)
+    }
+
+    private var studioAvatarFallback: some View {
+        ZStack {
+            LinearGradient(
+                colors: [VeltaTheme.accent, Color(red: 0.12, green: 0.28, blue: 0.62)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            Text("VB")
+                .font(.headline.weight(.bold))
+                .foregroundStyle(.white)
+        }
+    }
+
+    private static let mockAvatarURL = URL(
+        string: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=240&h=240&q=80"
+    )!
 
     private var searchRow: some View {
         HStack(spacing: 12) {

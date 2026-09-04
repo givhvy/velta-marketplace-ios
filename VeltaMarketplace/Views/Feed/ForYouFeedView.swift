@@ -69,7 +69,7 @@ struct ForYouFeedView: View {
                     if let beat {
                         Button {
                             app.play(beat)
-                            app.homePane = .beats
+                            app.selectedTab = .beats
                         } label: {
                             HStack(spacing: 8) {
                                 Image(systemName: "music.note")

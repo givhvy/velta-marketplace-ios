@@ -2,8 +2,8 @@ import SwiftUI
 
 struct MainTabView: View {
     @Environment(AppState.self) private var app
-    @State private var explorePath: [AppRoute] = []
-    @State private var searchPath: [AppRoute] = []
+    @State private var videoPath: [AppRoute] = []
+    @State private var beatsPath: [AppRoute] = []
     @State private var cartPath: [AppRoute] = []
     @State private var libraryPath: [AppRoute] = []
     @State private var menuPath: [AppRoute] = []
@@ -14,13 +14,13 @@ struct MainTabView: View {
         ZStack(alignment: .bottom) {
             GeometryReader { geo in
                 ZStack {
-                    tabStack(path: $explorePath) { ExploreView() }
-                        .opacity(app.selectedTab == .explore ? 1 : 0)
-                        .allowsHitTesting(app.selectedTab == .explore)
+                    tabStack(path: $videoPath) { VideoHomeView() }
+                        .opacity(app.selectedTab == .video ? 1 : 0)
+                        .allowsHitTesting(app.selectedTab == .video)
 
-                    tabStack(path: $searchPath) { SearchView() }
-                        .opacity(app.selectedTab == .search ? 1 : 0)
-                        .allowsHitTesting(app.selectedTab == .search)
+                    tabStack(path: $beatsPath) { BeatsHomeView() }
+                        .opacity(app.selectedTab == .beats ? 1 : 0)
+                        .allowsHitTesting(app.selectedTab == .beats)
 
                     tabStack(path: $cartPath) { CartView() }
                         .opacity(app.selectedTab == .cart ? 1 : 0)
@@ -46,6 +46,15 @@ struct MainTabView: View {
         .ignoresSafeArea(edges: .bottom)
         .background(VeltaTheme.ink.ignoresSafeArea())
         .animation(.easeInOut(duration: 0.22), value: app.hideBottomChrome)
+        .sheet(isPresented: $app.isBeatSearchPresented) {
+            SearchView()
+                .presentationDetents([.height(460)])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(24)
+                .presentationBackground {
+                    VeltaTheme.ink.ignoresSafeArea()
+                }
+        }
         .sheet(item: $app.checkout) { target in
             if let beat = app.catalog.beat(id: target.beatId) {
                 CheckoutView(beat: beat, tier: target.tier)
@@ -79,20 +88,27 @@ struct MainTabView: View {
         }
         .animation(.easeOut(duration: 0.2), value: app.toast)
         .animation(.easeOut(duration: 0.15), value: app.selectedTab)
-        .onChange(of: app.selectedTab) { _, _ in
-            app.hideBottomChrome = false
+        .onChange(of: app.selectedTab) { _, tab in
+            if tab != .video {
+                app.hideBottomChrome = false
+            }
+        }
+        .onChange(of: app.pendingBeatDetailId) { _, beatId in
+            guard let beatId else { return }
+            beatsPath.append(.beat(beatId))
+            app.pendingBeatDetailId = nil
         }
     }
 
     private var contentBottomInset: CGFloat {
         if app.hideBottomChrome { return 0 }
-        if app.selectedTab == .explore && app.homePane == .forYou { return 0 }
+        if app.selectedTab == .video { return 0 }
         return reservedBottomChrome
     }
 
     private var showsMiniPlayer: Bool {
         app.checkout == nil
-            && (app.homePane == .beats || app.selectedTab != .explore)
+            && app.selectedTab != .video
             && app.nowPlayingID != nil
     }
 
@@ -140,6 +156,8 @@ struct MainTabView: View {
         switch route {
         case .beat(let id):
             BeatDetailView(beatId: id)
+        case .license(let id):
+            LicenseDetailView(licenseId: id)
         case .studio:
             StudioView()
         case .login:

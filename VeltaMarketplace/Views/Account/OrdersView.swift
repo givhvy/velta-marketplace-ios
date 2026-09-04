@@ -17,7 +17,10 @@ struct OrdersView: View {
                     LazyVStack(spacing: 12) {
                         ForEach(app.licenses) { license in
                             if let beat = app.catalog.beat(id: license.beatId) {
-                                orderRow(beat: beat, license: license)
+                                NavigationLink(value: AppRoute.license(license.id)) {
+                                    orderRow(beat: beat, license: license)
+                                }
+                                .buttonStyle(.plain)
                             }
                         }
                     }
@@ -52,9 +55,14 @@ struct OrdersView: View {
 
             Spacer(minLength: 8)
 
-            Text(license.amount, format: .currency(code: "USD"))
-                .font(.subheadline.weight(.bold))
-                .foregroundStyle(VeltaTheme.price)
+            VStack(alignment: .trailing, spacing: 6) {
+                Text(license.amount, format: .currency(code: "USD"))
+                    .font(.subheadline.weight(.bold))
+                    .foregroundStyle(VeltaTheme.price)
+                Image(systemName: "chevron.right")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.white.opacity(0.25))
+            }
         }
         .padding(12)
         .background(

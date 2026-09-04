@@ -6,8 +6,8 @@ struct VeltaTabBar: View {
 
     var body: some View {
         HStack {
-            tabButton(.explore, icon: "house.fill")
-            tabButton(.search, icon: "magnifyingglass")
+            tabButton(.video, icon: "play.rectangle.fill")
+            tabButton(.beats, icon: "music.note.list")
             tabButton(.cart, icon: "bag", badge: cartCount)
             tabButton(.library, icon: "heart")
             tabButton(.menu, icon: "line.3.horizontal")
@@ -52,8 +52,8 @@ struct VeltaTabBar: View {
 
     private func label(for tab: AppTab) -> String {
         switch tab {
-        case .explore: "Home"
-        case .search: "Search"
+        case .video: "Video"
+        case .beats: "Beats"
         case .cart: "Bag"
         case .library: "Library"
         case .menu: "Menu"

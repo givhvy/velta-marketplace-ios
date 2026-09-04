@@ -21,7 +21,7 @@ struct CartView: View {
                         .foregroundStyle(.white.opacity(0.5))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 28)
-                    Button("Explore beats", action: app.openExplore)
+                    Button("Explore beats", action: app.openBeats)
                         .font(.headline)
                         .padding(.horizontal, 18)
                         .padding(.vertical, 10)

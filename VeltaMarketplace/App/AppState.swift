@@ -6,8 +6,9 @@ final class AppState {
     let catalog = CatalogStore()
     let auth = AuthStore()
     let previewPlayer = PreviewPlayer()
-    var selectedTab: AppTab = .explore
-    var homePane: HomePane = .beats
+    var selectedTab: AppTab = .beats
+    var isBeatSearchPresented = false
+    var pendingBeatDetailId: String?
     var activeClipID: String?
     var nowPlayingID: String?
     var likedClipIDs: [String] = []
@@ -70,8 +71,7 @@ final class AppState {
 
     func openVideo(clipId: String) {
         activeClipID = clipId
-        homePane = .forYou
-        selectedTab = .explore
+        selectedTab = .video
     }
 
     func isClipLiked(_ id: String) -> Bool {
@@ -127,6 +127,10 @@ final class AppState {
 
     func ownedLicense(for beatId: String) -> OwnedLicense? {
         licenses.first { $0.beatId == beatId }
+    }
+
+    func licenseRecord(id: String) -> OwnedLicense? {
+        licenses.first { $0.id == id }
     }
 
     func isLiked(_ beatId: String) -> Bool {
@@ -207,12 +211,23 @@ final class AppState {
         selectedTab = .menu
     }
 
-    func openExplore() {
-        selectedTab = .explore
+    func openBeats() {
+        selectedTab = .beats
+    }
+
+    func openVideoFeed() {
+        selectedTab = .video
     }
 
     func openSearch() {
-        selectedTab = .search
+        selectedTab = .beats
+        isBeatSearchPresented = true
+    }
+
+    func openBeatFromSearch(_ beatId: String) {
+        pendingBeatDetailId = beatId
+        isBeatSearchPresented = false
+        selectedTab = .beats
     }
 
     private func persistCart() {

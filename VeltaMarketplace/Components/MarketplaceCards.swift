@@ -155,34 +155,6 @@ struct CompactRail<Item: Identifiable, Content: View>: View {
     }
 }
 
-struct HomePanePicker: View {
-    @Binding var pane: HomePane
-
-    var body: some View {
-        HStack(spacing: 22) {
-            paneButton("For You", value: .forYou)
-            paneButton("Beats", value: .beats)
-        }
-        .padding(.vertical, 6)
-    }
-
-    private func paneButton(_ title: String, value: HomePane) -> some View {
-        Button {
-            pane = value
-        } label: {
-            VStack(spacing: 4) {
-                Text(title)
-                    .font(.subheadline.weight(pane == value ? .bold : .medium))
-                    .foregroundStyle(pane == value ? .white : .white.opacity(0.4))
-                Capsule()
-                    .fill(pane == value ? Color.white : Color.clear)
-                    .frame(width: 28, height: 2)
-            }
-        }
-        .buttonStyle(.plain)
-    }
-}
-
 struct MiniPlayerBar: View {
     let beat: Beat
     var webBase: URL
