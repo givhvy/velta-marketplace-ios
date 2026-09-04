@@ -23,6 +23,7 @@
 		634CD7CEF0A68EB0A869D131 /* VeltaMarketplaceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289B587BB53110D6D531C609 /* VeltaMarketplaceApp.swift */; };
 		6B45DCEDDDB966403843F726 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2C86E90477D11468C1C624 /* CartView.swift */; };
 		71CDEEFBCF0037F6E67AA3F4 /* BeatDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F6AED2C609861E3476B0E /* BeatDetailView.swift */; };
+		739720247735184212108966 /* MediaCDN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D127053D8A62352402003D /* MediaCDN.swift */; };
 		76A3D6380E794A035663427C /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC387BD8EF9D7FEC538EE77 /* ExploreView.swift */; };
 		778795EB8197FF258E254632 /* ForYouFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63F6A258585F75859DA5E5 /* ForYouFeedView.swift */; };
 		796DA26A2564EBB68C0A0F8A /* MarketplaceCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA0F37BB9DC983617BE5D80 /* MarketplaceCards.swift */; };
@@ -32,6 +33,7 @@
 		925188BEBB00B0D945B7D25F /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F38DD0EB658EE521E4EA95 /* MainTabView.swift */; };
 		A0790AB523D4687835035CD4 /* Beat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E5BFE21A4F0D7552C16FF7 /* Beat.swift */; };
 		AE4AC3635BA1E26961922B74 /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F865FD6D497A885A96E6DC /* AuthStore.swift */; };
+		B0F57411C491F7DA1577C5BF /* PreviewPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79AC2DB95B8D3896C85CF6 /* PreviewPlayer.swift */; };
 		C99C2ED19B3B8A3EBF4A0CBE /* VeltaTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21677FBA336C63A221183D25 /* VeltaTheme.swift */; };
 		CB80CA65CFCBD8CE6B868C4E /* clips.json in Resources */ = {isa = PBXBuildFile; fileRef = 081A6D87345DADC870740FAE /* clips.json */; };
 		DF439202A35B463E12F15D0D /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8963F7608C171719F90352 /* AccountSettingsView.swift */; };
@@ -76,11 +78,13 @@
 		A2BAD66948FE5010A76FC166 /* OrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersView.swift; sourceTree = "<group>"; };
 		A3EAAAD9AF3F18D9B69E4DA1 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		B55F6AED2C609861E3476B0E /* BeatDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeatDetailView.swift; sourceTree = "<group>"; };
+		BF79AC2DB95B8D3896C85CF6 /* PreviewPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPlayer.swift; sourceTree = "<group>"; };
 		D1C81FA6217484B46445D173 /* PaymentMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsView.swift; sourceTree = "<group>"; };
 		D2A56C1EA102B28C48E986E7 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		D4A6F42C06A739E5EF72CD39 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		DA2C86E90477D11468C1C624 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		DF09636005B8705959DE16DF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		F6D127053D8A62352402003D /* MediaCDN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCDN.swift; sourceTree = "<group>"; };
 		FBE2E1CF8AC23ABA25884DE1 /* ApplePaySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePaySession.swift; sourceTree = "<group>"; };
 		FCECB54A20621520D3C8DE5D /* BeatCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeatCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -261,6 +265,8 @@
 				FBE2E1CF8AC23ABA25884DE1 /* ApplePaySession.swift */,
 				97F865FD6D497A885A96E6DC /* AuthStore.swift */,
 				3A106B61E46241645D113AD4 /* CatalogStore.swift */,
+				F6D127053D8A62352402003D /* MediaCDN.swift */,
+				BF79AC2DB95B8D3896C85CF6 /* PreviewPlayer.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -419,9 +425,11 @@
 				ECDF395C4E0B35BF5FE3FE2F /* LoopingVideoView.swift in Sources */,
 				925188BEBB00B0D945B7D25F /* MainTabView.swift in Sources */,
 				796DA26A2564EBB68C0A0F8A /* MarketplaceCards.swift in Sources */,
+				739720247735184212108966 /* MediaCDN.swift in Sources */,
 				12BDE99CC0CB270463B9DD24 /* OrdersView.swift in Sources */,
 				0909B0ABF9C34D7F2A8E165C /* PaymentMethodsView.swift in Sources */,
 				E1B6CAE04A5AFF77482A7BC4 /* PhotosHeaderBlur.swift in Sources */,
+				B0F57411C491F7DA1577C5BF /* PreviewPlayer.swift in Sources */,
 				3F909033509FB3A8F06D6244 /* SearchView.swift in Sources */,
 				024146C8D47CF47E039CB0D4 /* StudioView.swift in Sources */,
 				3494E0A8099FFF3882FA30DB /* UsageClip.swift in Sources */,

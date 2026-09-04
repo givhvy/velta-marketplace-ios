@@ -6,6 +6,8 @@ final class CatalogStore {
     private(set) var beats: [Beat] = []
     private(set) var clips: [UsageClip] = []
     private(set) var webBase = URL(string: "http://127.0.0.1:3000")!
+    private(set) var mediaBase = MediaCDN.primaryBase
+    private(set) var mediaFallbackBase = MediaCDN.fallbackBase
     private(set) var isLive = false
     private(set) var loadError: String?
 
@@ -39,6 +41,12 @@ final class CatalogStore {
             beats = live.beats
             if let base = live.webBase, let url = URL(string: base) {
                 webBase = url
+            }
+            if let base = live.mediaBase, let url = URL(string: base) {
+                mediaBase = url
+            }
+            if let base = live.mediaFallbackBase, let url = URL(string: base) {
+                mediaFallbackBase = url
             }
             isLive = true
             return

@@ -3,6 +3,8 @@ import Foundation
 struct CatalogPayload: Decodable, Sendable {
     var app: String?
     var webBase: String?
+    var mediaBase: String?
+    var mediaFallbackBase: String?
     var beats: [Beat]
 }
 
@@ -17,6 +19,7 @@ struct Beat: Identifiable, Hashable, Decodable, Sendable {
     var coverGradient: String
     var coverImageUrl: String?
     var previewUrl: String?
+    var demoPreviewUrl: String?
     var sellerId: String
     var sellerName: String
     var sellerVerified: Bool
@@ -35,8 +38,22 @@ struct Beat: Identifiable, Hashable, Decodable, Sendable {
     }
 
     func coverURL(webBase: URL) -> URL? {
-        guard let coverImageUrl, coverImageUrl.hasPrefix("/") else { return nil }
-        return webBase.appendingPathComponent(String(coverImageUrl.dropFirst()))
+        guard let coverImageUrl else { return nil }
+        if coverImageUrl.hasPrefix("http"), let url = URL(string: coverImageUrl) {
+            return url
+        }
+        if coverImageUrl.hasPrefix("/") {
+            return webBase.appendingPathComponent(String(coverImageUrl.dropFirst()))
+        }
+        return nil
+    }
+
+    func previewCandidates(primary: URL, fallback: URL) -> [URL] {
+        var urls = MediaCDN.resolve(previewUrl ?? MediaCDN.defaultPreviewKey(for: self), primary: primary, fallback: fallback)
+        if let demoPreviewUrl, let demo = URL(string: demoPreviewUrl) {
+            urls.append(demo)
+        }
+        return urls
     }
 
     func license(tier: String) -> BeatLicense? {

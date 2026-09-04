@@ -5,6 +5,7 @@ import Foundation
 final class AppState {
     let catalog = CatalogStore()
     let auth = AuthStore()
+    let previewPlayer = PreviewPlayer()
     var selectedTab: AppTab = .explore
     var homePane: HomePane = .forYou
     var activeClipID: String?
@@ -88,6 +89,28 @@ final class AppState {
     func play(_ beat: Beat) {
         nowPlayingID = beat.id
         markViewed(beat.id)
+        let candidates = beat.previewCandidates(
+            primary: catalog.mediaBase,
+            fallback: catalog.mediaFallbackBase
+        )
+        guard !candidates.isEmpty else { return }
+        Task {
+            await previewPlayer.play(beatID: beat.id, candidates: candidates)
+        }
+    }
+
+    func togglePreview(_ beat: Beat) {
+        nowPlayingID = beat.id
+        markViewed(beat.id)
+        let candidates = beat.previewCandidates(
+            primary: catalog.mediaBase,
+            fallback: catalog.mediaFallbackBase
+        )
+        previewPlayer.toggle(beat: beat, candidates: candidates)
+    }
+
+    func isPreviewPlaying(_ beatId: String) -> Bool {
+        previewPlayer.playingBeatID == beatId && previewPlayer.isPlaying
     }
 
     func likedBeats() -> [Beat] {

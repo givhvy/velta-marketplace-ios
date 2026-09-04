@@ -21,6 +21,7 @@ struct AccountSettingsView: View {
 
             Section("Store") {
                 LabeledContent("Catalog", value: app.catalog.isLive ? "Live API" : "Offline bundle")
+                LabeledContent("Media CDN", value: app.catalog.mediaBase.host ?? "wavs.huy.global")
                 LabeledContent("Checkout", value: "In-app")
             }
         }

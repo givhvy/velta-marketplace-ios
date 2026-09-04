@@ -100,9 +100,12 @@ struct MainTabView: View {
                let id = app.nowPlayingID,
                let beat = app.catalog.beat(id: id)
             {
-                MiniPlayerBar(beat: beat, webBase: app.catalog.webBase) {
-                    app.selectedTab = .explore
-                    app.homePane = .beats
+                MiniPlayerBar(
+                    beat: beat,
+                    webBase: app.catalog.webBase,
+                    isPlaying: app.isPreviewPlaying(beat.id)
+                ) {
+                    app.togglePreview(beat)
                 }
             }
             VeltaTabBar(

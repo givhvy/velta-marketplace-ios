@@ -186,31 +186,35 @@ struct HomePanePicker: View {
 struct MiniPlayerBar: View {
     let beat: Beat
     var webBase: URL
-    var onOpen: () -> Void
+    var isPlaying: Bool
+    var onToggle: () -> Void
 
     var body: some View {
-        Button(action: onOpen) {
-            HStack(spacing: 10) {
-                BeatCoverView(beat: beat, webBase: webBase)
-                    .frame(width: 40, height: 40)
-                    .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(beat.title)
-                        .font(.footnote.weight(.semibold))
-                        .foregroundStyle(.white)
-                        .lineLimit(1)
-                    Text(beat.sellerName)
-                        .font(.caption2)
-                        .foregroundStyle(.white.opacity(0.5))
-                }
-                Spacer()
-                Image(systemName: "play.fill")
+        HStack(spacing: 10) {
+            BeatCoverView(beat: beat, webBase: webBase)
+                .frame(width: 40, height: 40)
+                .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+            VStack(alignment: .leading, spacing: 2) {
+                Text(beat.title)
+                    .font(.footnote.weight(.semibold))
                     .foregroundStyle(.white)
+                    .lineLimit(1)
+                Text(beat.sellerName)
+                    .font(.caption2)
+                    .foregroundStyle(.white.opacity(0.5))
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(VeltaTheme.inkElevated)
+            Spacer()
+            Button(action: onToggle) {
+                Image(systemName: isPlaying ? "pause.fill" : "play.fill")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 36, height: 36)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(isPlaying ? "Pause" : "Play")
         }
-        .buttonStyle(.plain)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(VeltaTheme.inkElevated)
     }
 }
