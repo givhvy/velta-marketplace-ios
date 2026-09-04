@@ -7,7 +7,7 @@ final class AppState {
     let auth = AuthStore()
     let previewPlayer = PreviewPlayer()
     var selectedTab: AppTab = .explore
-    var homePane: HomePane = .forYou
+    var homePane: HomePane = .beats
     var activeClipID: String?
     var nowPlayingID: String?
     var likedClipIDs: [String] = []
@@ -157,11 +157,6 @@ final class AppState {
     }
 
     func openCheckout(_ beat: Beat, tier: String) {
-        guard auth.isSignedIn else {
-            toast = "Sign in to buy beats"
-            selectedTab = .menu
-            return
-        }
         checkout = CheckoutTarget(beatId: beat.id, tier: tier)
     }
 

@@ -37,7 +37,9 @@ final class CatalogStore {
     func load() async {
         loadError = nil
         clips = Self.bundledClips()
-        if let live = await fetchLive() {
+        let bundled = Self.bundledBeats()
+
+        if let live = await fetchLive(), !live.beats.isEmpty {
             beats = live.beats
             if let base = live.webBase, let url = URL(string: base) {
                 webBase = url
@@ -52,7 +54,7 @@ final class CatalogStore {
             return
         }
 
-        beats = Self.bundledBeats()
+        beats = bundled
         isLive = false
         if beats.isEmpty {
             loadError = "Catalog unavailable."

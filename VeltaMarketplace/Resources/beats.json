@@ -5,12 +5,23 @@
     "title": "Midnight Trap - Drake x Future Type Beat",
     "bpm": 142,
     "key": "F# min",
-    "genres": ["Trap", "Hip Hop"],
-    "tags": ["drake", "future", "dark", "melodic"],
+    "genres": [
+      "Trap",
+      "Hip Hop"
+    ],
+    "tags": [
+      "drake",
+      "future",
+      "dark",
+      "melodic"
+    ],
     "coverGradient": "from-sky-900 via-blue-950 to-black",
     "coverImageUrl": "/images/hero-covers/midnight-trap.jpg",
     "previewUrl": "marketplace/previews/midnight-trap-drake-type.mp3",
-    "demoPreviewUrl": "https://stratum-cloud-api.vercel.app/api/cloud/preview-entry?id=cloud-trap-kit&path=Snare%2FSnare_SD_01.wav&offset=5377065&compSize=14650&method=8&size=22094",
+    "sellerId": "seller_velta",
+    "sellerName": "Velta Beats",
+    "sellerVerified": true,
+    "plays": 12840,
     "likes": 892,
     "featured": true,
     "licenses": [
@@ -36,7 +47,8 @@
         "description": "Full exclusive rights, beat removed from store"
       }
     ],
-    "createdAt": "2026-08-15T10:00:00.000Z"
+    "createdAt": "2026-08-15T10:00:00.000Z",
+    "demoPreviewUrl": "https://stratum-cloud-api.vercel.app/api/cloud/preview-entry?id=cloud-trap-kit&path=Snare%2FSnare_SD_01.wav&offset=5377065&compSize=14650&method=8&size=22094"
   },
   {
     "id": "beat_002",
@@ -44,12 +56,23 @@
     "title": "Velvet Soul - Brent Faiyaz x R&B Type Beat",
     "bpm": 88,
     "key": "D maj",
-    "genres": ["R&B", "Soul"],
-    "tags": ["brent faiyaz", "rnb", "smooth", "vocal"],
+    "genres": [
+      "R&B",
+      "Soul"
+    ],
+    "tags": [
+      "brent faiyaz",
+      "rnb",
+      "smooth",
+      "vocal"
+    ],
     "coverGradient": "from-slate-700 via-slate-900 to-black",
     "coverImageUrl": "/images/hero-covers/velvet-soul.jpg",
     "previewUrl": "marketplace/previews/soul-rnb-brent-type.mp3",
-    "demoPreviewUrl": "https://stratum-cloud-api.vercel.app/api/cloud/preview-entry?id=cloud-rnb-kit&path=Kick%2FKick_BD_01.wav&offset=1965675&compSize=10865&method=8&size=22096",
+    "sellerId": "seller_velta",
+    "sellerName": "Velta Beats",
+    "sellerVerified": true,
+    "plays": 8420,
     "likes": 614,
     "featured": true,
     "licenses": [
@@ -75,7 +98,8 @@
         "description": "Full exclusive rights, beat removed from store"
       }
     ],
-    "createdAt": "2026-08-20T14:30:00.000Z"
+    "createdAt": "2026-08-20T14:30:00.000Z",
+    "demoPreviewUrl": "https://stratum-cloud-api.vercel.app/api/cloud/preview-entry?id=cloud-rnb-kit&path=Kick%2FKick_BD_01.wav&offset=1965675&compSize=10865&method=8&size=22096"
   },
   {
     "id": "beat_003",
@@ -83,12 +107,23 @@
     "title": "Red Rum - 90s Boom Bap x Hip Hop",
     "bpm": 96,
     "key": "Cm",
-    "genres": ["Boom Bap", "Hip Hop"],
-    "tags": ["boom bap", "90s", "sample", "gritty"],
+    "genres": [
+      "Boom Bap",
+      "Hip Hop"
+    ],
+    "tags": [
+      "boom bap",
+      "90s",
+      "sample",
+      "gritty"
+    ],
     "coverGradient": "from-amber-900 via-orange-950 to-black",
     "coverImageUrl": "/images/hero-covers/red-rum.jpg",
     "previewUrl": "marketplace/previews/boom-bap-90s-classic.mp3",
-    "demoPreviewUrl": "https://stratum-cloud-api.vercel.app/api/cloud/preview-entry?id=cloud-dirt-drums&path=Hat%2F005_hh3kick1.wav&offset=888116&compSize=65361&method=8&size=81536",
+    "sellerId": "seller_blackrose",
+    "sellerName": "Black Rose Beatz",
+    "sellerVerified": true,
+    "plays": 15600,
     "likes": 1102,
     "featured": false,
     "licenses": [
@@ -114,7 +149,8 @@
         "description": "Full exclusive rights, beat removed from store"
       }
     ],
-    "createdAt": "2026-08-28T09:15:00.000Z"
+    "createdAt": "2026-08-28T09:15:00.000Z",
+    "demoPreviewUrl": "https://stratum-cloud-api.vercel.app/api/cloud/preview-entry?id=cloud-dirt-drums&path=Hat%2F005_hh3kick1.wav&offset=888116&compSize=65361&method=8&size=81536"
   },
   {
     "id": "beat_004",
@@ -122,12 +158,23 @@
     "title": "Night Drive - Afro Trap x Burna Type Beat",
     "bpm": 104,
     "key": "G min",
-    "genres": ["Afrobeats", "Trap"],
-    "tags": ["afro", "burna", "night", "dancehall"],
+    "genres": [
+      "Afrobeats",
+      "Trap"
+    ],
+    "tags": [
+      "afro",
+      "burna",
+      "night",
+      "dancehall"
+    ],
     "coverGradient": "from-indigo-900 via-violet-950 to-black",
     "coverImageUrl": "/images/hero-covers/night-drive.jpg",
     "previewUrl": "marketplace/previews/night-drive-afro-trap.mp3",
-    "demoPreviewUrl": "https://stratum-cloud-api.vercel.app/api/cloud/preview-entry?id=cloud-trap-kit&path=808%2F808_Sub_01.wav&offset=34&compSize=10895&method=8&size=22094",
+    "sellerId": "seller_velta",
+    "sellerName": "Velta Beats",
+    "sellerVerified": true,
+    "plays": 11240,
     "likes": 748,
     "featured": true,
     "licenses": [
@@ -153,6 +200,7 @@
         "description": "Full exclusive rights, beat removed from store"
       }
     ],
-    "createdAt": "2026-09-01T18:00:00.000Z"
+    "createdAt": "2026-09-01T18:00:00.000Z",
+    "demoPreviewUrl": "https://stratum-cloud-api.vercel.app/api/cloud/preview-entry?id=cloud-trap-kit&path=808%2F808_Sub_01.wav&offset=34&compSize=10895&method=8&size=22094"
   }
 ]
