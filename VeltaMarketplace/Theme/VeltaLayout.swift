@@ -35,6 +35,9 @@ enum VeltaLayout {
     static func isRegular(_ width: CGFloat) -> Bool {
         width >= 700
     }
+
+    /// Clears VeltaTabBar + spacing so For You side actions never sit on the tab icons.
+    static let forYouOverlayBottom: CGFloat = 88
 }
 
 extension View {

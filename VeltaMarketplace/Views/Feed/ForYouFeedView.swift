@@ -102,7 +102,7 @@ struct ForYouFeedView: View {
                 }
             }
             .padding(.horizontal, VeltaLayout.gutter(for: width))
-            .padding(.bottom, 18)
+            .padding(.bottom, VeltaLayout.forYouOverlayBottom)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }
         .frame(width: size.width, height: size.height)
@@ -125,6 +125,9 @@ struct ForYouFeedView: View {
                 Text(label)
                     .font(.caption2.weight(.medium))
                     .foregroundStyle(.white)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                    .frame(minWidth: 36)
             }
         }
         .buttonStyle(.plain)
