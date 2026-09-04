@@ -10,35 +10,52 @@ struct MainTabView: View {
     var body: some View {
         @Bindable var app = app
 
-        ZStack(alignment: .bottom) {
-            GeometryReader { geo in
-                ZStack {
+        GeometryReader { geo in
+            TabView(selection: $app.selectedTab) {
+                Tab(value: AppTab.video) {
                     tabStack(path: $videoPath) { VideoHomeView() }
-                        .opacity(app.selectedTab == .video ? 1 : 0)
-                        .allowsHitTesting(app.selectedTab == .video)
-
-                    tabStack(path: $beatsPath) { BeatsHomeView() }
-                        .opacity(app.selectedTab == .beats ? 1 : 0)
-                        .allowsHitTesting(app.selectedTab == .beats)
-
-                    tabStack(path: $cartPath) { CartView() }
-                        .opacity(app.selectedTab == .cart ? 1 : 0)
-                        .allowsHitTesting(app.selectedTab == .cart)
-
-                    tabStack(path: $menuPath) { AccountView() }
-                        .opacity(app.selectedTab == .menu ? 1 : 0)
-                        .allowsHitTesting(app.selectedTab == .menu)
+                } label: {
+                    Label("Video", systemImage: "play.rectangle.fill")
                 }
-                .environment(\.veltaWidth, geo.size.width)
-            }
-            .padding(.bottom, contentBottomInset)
 
-            bottomChrome
-                .offset(y: app.hideBottomChrome ? reservedBottomChrome + 24 : 0)
-                .opacity(app.hideBottomChrome ? 0 : 1)
-                .allowsHitTesting(!app.hideBottomChrome)
+                Tab(value: AppTab.beats) {
+                    tabStack(path: $beatsPath) { BeatsHomeView() }
+                } label: {
+                    Label("Beats", systemImage: "music.note.list")
+                }
+
+                Tab(value: AppTab.cart) {
+                    tabStack(path: $cartPath) { CartView() }
+                } label: {
+                    Label("Bag", systemImage: "bag")
+                }
+                .badge(app.cartCount)
+
+                Tab(value: AppTab.menu) {
+                    tabStack(path: $menuPath) { AccountView() }
+                } label: {
+                    Label("Menu", systemImage: "line.3.horizontal")
+                }
+            }
+            .tabBarMinimizeBehavior(.onScrollDown)
+            .tint(.white)
+            .toolbar(shouldHideTabBar ? .hidden : .visible, for: .tabBar)
+            .tabViewBottomAccessory {
+                if showsMiniPlayer,
+                   let id = app.nowPlayingID,
+                   let beat = app.catalog.beat(id: id)
+                {
+                    MiniPlayerBar(
+                        beat: beat,
+                        webBase: app.catalog.webBase,
+                        isPlaying: app.isPreviewPlaying(beat.id)
+                    ) {
+                        app.togglePreview(beat)
+                    }
+                }
+            }
+            .environment(\.veltaWidth, geo.size.width)
         }
-        .ignoresSafeArea(edges: .bottom)
         .background(VeltaTheme.ink.ignoresSafeArea())
         .animation(.easeInOut(duration: 0.22), value: app.hideBottomChrome)
         .sheet(isPresented: $app.isBeatSearchPresented) {
@@ -73,7 +90,7 @@ struct MainTabView: View {
                     .environment(\.colorScheme, .dark)
                     .overlay(Capsule().strokeBorder(VeltaTheme.inkLine))
                     .padding(.horizontal, 20)
-                    .padding(.bottom, (app.hideBottomChrome ? 12 : reservedBottomChrome + 12))
+                    .padding(.bottom, toastBottomPadding)
                     .onTapGesture { app.toast = nil }
                     .task {
                         try? await Task.sleep(for: .seconds(2.4))
@@ -82,7 +99,6 @@ struct MainTabView: View {
             }
         }
         .animation(.easeOut(duration: 0.2), value: app.toast)
-        .animation(.easeOut(duration: 0.15), value: app.selectedTab)
         .onChange(of: app.selectedTab) { _, tab in
             if tab != .video {
                 app.hideBottomChrome = false
@@ -100,10 +116,8 @@ struct MainTabView: View {
         }
     }
 
-    private var contentBottomInset: CGFloat {
-        if app.hideBottomChrome { return 0 }
-        if app.selectedTab == .video { return 0 }
-        return reservedBottomChrome
+    private var shouldHideTabBar: Bool {
+        app.hideBottomChrome && app.selectedTab == .video
     }
 
     private var showsMiniPlayer: Bool {
@@ -112,33 +126,10 @@ struct MainTabView: View {
             && app.nowPlayingID != nil
     }
 
-    private var reservedBottomChrome: CGFloat {
-        VeltaLayout.tabBarContentHeight + (showsMiniPlayer ? VeltaLayout.miniPlayerHeight : 0)
-    }
-
-    private var bottomChrome: some View {
-        VStack(spacing: 0) {
-            if showsMiniPlayer,
-               let id = app.nowPlayingID,
-               let beat = app.catalog.beat(id: id)
-            {
-                MiniPlayerBar(
-                    beat: beat,
-                    webBase: app.catalog.webBase,
-                    isPlaying: app.isPreviewPlaying(beat.id)
-                ) {
-                    app.togglePreview(beat)
-                }
-            }
-            VeltaTabBar(
-                selection: Binding(
-                    get: { app.selectedTab },
-                    set: { app.selectedTab = $0 }
-                ),
-                cartCount: app.cartCount
-            )
-        }
-        .background(VeltaTheme.ink)
+    private var toastBottomPadding: CGFloat {
+        if shouldHideTabBar { return 12 }
+        let accessory = showsMiniPlayer ? VeltaLayout.miniPlayerHeight + 8 : 0
+        return VeltaLayout.liquidTabBarReserve + accessory + 12
     }
 
     private func tabStack<Content: View>(

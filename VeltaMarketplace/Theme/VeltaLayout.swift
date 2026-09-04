@@ -36,8 +36,10 @@ enum VeltaLayout {
         width >= 700
     }
 
-    /// 8 top + 44 icons + 18 bottom (clears the home-indicator pill).
-    static let tabBarContentHeight: CGFloat = 70
+    /// Floating Liquid Glass tab pill + home indicator clearance.
+    static let liquidTabBarReserve: CGFloat = 74
+    /// Legacy reserve used by For You overlays.
+    static let tabBarContentHeight: CGFloat = liquidTabBarReserve
     static let miniPlayerHeight: CGFloat = 56
     /// Extra air between For You Buy and the tab icons.
     static let forYouOverlayBottom: CGFloat = 16
