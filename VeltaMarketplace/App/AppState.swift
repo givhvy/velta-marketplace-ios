@@ -4,6 +4,7 @@ import Foundation
 @Observable
 final class AppState {
     let catalog = CatalogStore()
+    let auth = AuthStore()
     var selectedTab: AppTab = .explore
     var homePane: HomePane = .forYou
     var activeClipID: String?
@@ -16,17 +17,23 @@ final class AppState {
     var checkout: CheckoutTarget?
     var toast: String?
     var isPurchasing = false
+    var hideBottomChrome = false
+    var notificationsEnabled: Bool {
+        didSet { UserDefaults.standard.set(notificationsEnabled, forKey: notificationsKey) }
+    }
 
     private let cartKey = "velta.cart"
     private let licensesKey = "velta.licenses"
     private let likesKey = "velta.likes"
     private let recentKey = "velta.recent"
+    private let notificationsKey = "velta.notifications"
 
     init() {
         cart = Self.load(cartKey) ?? []
         licenses = Self.load(licensesKey) ?? []
         likedIDs = UserDefaults.standard.stringArray(forKey: likesKey) ?? []
         recentlyViewedIDs = UserDefaults.standard.stringArray(forKey: recentKey) ?? []
+        notificationsEnabled = UserDefaults.standard.object(forKey: notificationsKey) as? Bool ?? true
     }
 
     var cartCount: Int { cart.count }
@@ -127,6 +134,11 @@ final class AppState {
     }
 
     func openCheckout(_ beat: Beat, tier: String) {
+        guard auth.isSignedIn else {
+            toast = "Sign in to buy beats"
+            selectedTab = .menu
+            return
+        }
         checkout = CheckoutTarget(beatId: beat.id, tier: tier)
     }
 
@@ -142,7 +154,11 @@ final class AppState {
         isPurchasing = true
         defer { isPurchasing = false }
 
-        let remote = await catalog.submitPurchase(beatId: beat.id, tier: tier)
+        let remote = await catalog.submitPurchase(
+            beatId: beat.id,
+            tier: tier,
+            authorization: auth.authorizationHeader()
+        )
         let record = OwnedLicense(
             id: remote?.id ?? "local_\(UUID().uuidString)",
             beatId: beat.id,

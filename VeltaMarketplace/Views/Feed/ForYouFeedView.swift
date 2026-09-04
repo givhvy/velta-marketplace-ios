@@ -102,7 +102,7 @@ struct ForYouFeedView: View {
                 }
             }
             .padding(.horizontal, VeltaLayout.gutter(for: width))
-            .padding(.bottom, VeltaLayout.forYouActionBottom(safeAreaBottom: bottomInset))
+            .padding(.bottom, VeltaLayout.forYouActionBottom(safeAreaBottom: bottomInset, tabBarHidden: app.hideBottomChrome))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }
         .frame(width: size.width, height: size.height)

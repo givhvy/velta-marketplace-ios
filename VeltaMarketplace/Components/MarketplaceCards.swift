@@ -163,14 +163,14 @@ struct HomePanePicker: View {
             paneButton("For You", value: .forYou)
             paneButton("Beats", value: .beats)
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 6)
     }
 
     private func paneButton(_ title: String, value: HomePane) -> some View {
         Button {
             pane = value
         } label: {
-            VStack(spacing: 6) {
+            VStack(spacing: 4) {
                 Text(title)
                     .font(.subheadline.weight(pane == value ? .bold : .medium))
                     .foregroundStyle(pane == value ? .white : .white.opacity(0.4))

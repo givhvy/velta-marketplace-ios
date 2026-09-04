@@ -36,30 +36,40 @@ struct MainTabView: View {
                 }
                 .environment(\.veltaWidth, geo.size.width)
             }
-            .padding(.bottom, reservedBottomChrome)
+            .padding(.bottom, app.hideBottomChrome ? 0 : reservedBottomChrome)
 
             bottomChrome
+                .offset(y: app.hideBottomChrome ? reservedBottomChrome + 24 : 0)
+                .opacity(app.hideBottomChrome ? 0 : 1)
+                .allowsHitTesting(!app.hideBottomChrome)
         }
         .ignoresSafeArea(edges: .bottom)
         .background(VeltaTheme.ink.ignoresSafeArea())
+        .animation(.easeInOut(duration: 0.22), value: app.hideBottomChrome)
         .sheet(item: $app.checkout) { target in
             if let beat = app.catalog.beat(id: target.beatId) {
                 CheckoutView(beat: beat, tier: target.tier)
-                    .presentationDetents([.large])
+                    .presentationDetents([.height(420)])
                     .presentationDragIndicator(.visible)
-                    .presentationCornerRadius(28)
+                    .presentationCornerRadius(24)
+                    .presentationBackground {
+                        VeltaTheme.ink.ignoresSafeArea()
+                    }
             }
         }
-        .overlay(alignment: .top) {
+        .overlay(alignment: .bottom) {
             if let toast = app.toast {
                 Text(toast)
                     .font(.footnote.weight(.medium))
                     .foregroundStyle(.white)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 10)
-                    .background(Color.white.opacity(0.12), in: Capsule())
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .background(.ultraThinMaterial, in: Capsule())
+                    .environment(\.colorScheme, .dark)
                     .overlay(Capsule().strokeBorder(VeltaTheme.inkLine))
-                    .padding(.top, 8)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, (app.hideBottomChrome ? 12 : reservedBottomChrome + 12))
                     .onTapGesture { app.toast = nil }
                     .task {
                         try? await Task.sleep(for: .seconds(2.4))
@@ -69,10 +79,15 @@ struct MainTabView: View {
         }
         .animation(.easeOut(duration: 0.2), value: app.toast)
         .animation(.easeOut(duration: 0.15), value: app.selectedTab)
+        .onChange(of: app.selectedTab) { _, _ in
+            app.hideBottomChrome = false
+        }
     }
 
     private var showsMiniPlayer: Bool {
-        (app.homePane == .beats || app.selectedTab != .explore) && app.nowPlayingID != nil
+        app.checkout == nil
+            && (app.homePane == .beats || app.selectedTab != .explore)
+            && app.nowPlayingID != nil
     }
 
     private var reservedBottomChrome: CGFloat {
@@ -118,6 +133,18 @@ struct MainTabView: View {
             BeatDetailView(beatId: id)
         case .studio:
             StudioView()
+        case .login:
+            LoginView()
+        case .orders:
+            OrdersView()
+        case .payments:
+            PaymentMethodsView()
+        case .settings:
+            AccountSettingsView()
+        case .help:
+            HelpView()
+        case .legal(let document):
+            LegalDocumentView(document: document)
         }
     }
 }

@@ -51,7 +51,7 @@ final class CatalogStore {
         }
     }
 
-    func submitPurchase(beatId: String, tier: String) async -> MobilePurchase? {
+    func submitPurchase(beatId: String, tier: String, authorization: String? = nil) async -> MobilePurchase? {
         let endpoints = [
             webBase.appending(path: "api/mobile/checkout"),
             URL(string: "http://127.0.0.1:3000/api/mobile/checkout"),
@@ -65,6 +65,9 @@ final class CatalogStore {
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            if let authorization {
+                request.setValue(authorization, forHTTPHeaderField: "Authorization")
+            }
             request.httpBody = payload
             request.timeoutInterval = 4
             do {

@@ -4,21 +4,20 @@ import SwiftUI
 struct CheckoutView: View {
     @Environment(AppState.self) private var app
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.verticalSizeClass) private var verticalSizeClass
     let beat: Beat
     @State var tier: String
     @State private var applePay = ApplePaySession()
 
     var body: some View {
         let selected = beat.license(tier: tier)
-        let coverSize: CGFloat = verticalSizeClass == .compact ? 52 : 64
 
         VStack(spacing: 0) {
-            HStack {
+            HStack(alignment: .center) {
                 Text("Checkout")
                     .font(.headline.weight(.semibold))
                     .foregroundStyle(.white)
-                Spacer()
+                    .lineLimit(1)
+                Spacer(minLength: 12)
                 Button {
                     dismiss()
                 } label: {
@@ -31,112 +30,113 @@ struct CheckoutView: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel("Close")
             }
+            .frame(minHeight: 44)
             .padding(.horizontal, 20)
-            .padding(.top, 16)
-            .padding(.bottom, 12)
+            .padding(.bottom, 10)
 
-            HStack(alignment: .top, spacing: 12) {
-                BeatCoverView(beat: beat, webBase: app.catalog.webBase)
-                    .frame(width: coverSize, height: coverSize)
-                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(beat.title)
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.8)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Text(beat.sellerName)
-                        .font(.caption)
-                        .foregroundStyle(.white.opacity(0.55))
-                        .lineLimit(1)
+            VStack(spacing: 8) {
+                ForEach(beat.licenses) { license in
+                    licenseRow(license)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 16)
+            .padding(.top, 4)
 
-            ScrollView {
-                VStack(spacing: 8) {
-                    ForEach(beat.licenses) { license in
-                        Button {
-                            tier = license.tier
-                        } label: {
-                            HStack(alignment: .top, spacing: 12) {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(license.label)
-                                        .font(.subheadline.weight(.semibold))
-                                    Text(license.description)
-                                        .font(.caption)
-                                        .foregroundStyle(.white.opacity(0.5))
-                                        .fixedSize(horizontal: false, vertical: true)
-                                }
-                                Spacer(minLength: 8)
-                                Text(license.price, format: .currency(code: "USD"))
-                                    .font(.subheadline.weight(.bold))
-                                    .monospacedDigit()
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.8)
-                            }
-                            .padding(14)
-                            .background(
-                                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                    .fill(tier == license.tier ? VeltaTheme.accentSoft : Color.white.opacity(0.04))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                            .strokeBorder(
-                                                tier == license.tier ? VeltaTheme.accent : VeltaTheme.inkLine
-                                            )
-                                    )
-                            )
-                            .foregroundStyle(.white)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 12)
-            }
+            Spacer(minLength: 8)
 
             if let selected {
                 VStack(spacing: 10) {
+                    HStack(spacing: 10) {
+                        Button {
+                            app.addToCart(beat, tier: selected.tier)
+                            dismiss()
+                            app.selectedTab = .cart
+                        } label: {
+                            Text("Add to bag")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 13)
+                                .background(
+                                    Capsule()
+                                        .strokeBorder(VeltaTheme.inkLine)
+                                        .background(VeltaTheme.inkElevated, in: Capsule())
+                                )
+                                .foregroundStyle(.white)
+                        }
+                        .buttonStyle(.plain)
+
+                        Button {
+                            Task { await completePurchase(beat: beat, tier: selected.tier) }
+                        } label: {
+                            Group {
+                                if app.isPurchasing {
+                                    ProgressView().tint(.white)
+                                } else {
+                                    Text("Buy \(selected.label)")
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.75)
+                                }
+                            }
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 13)
+                            .background(VeltaTheme.accent, in: Capsule())
+                            .foregroundStyle(.white)
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(app.isPurchasing)
+                    }
+
                     applePayButton(beat: beat, license: selected)
 
-                    Button {
-                        Task { await completePurchase(beat: beat, tier: selected.tier) }
-                    } label: {
-                        Group {
-                            if app.isPurchasing {
-                                ProgressView().tint(.white)
-                            } else {
-                                Text("Pay \(selected.price, format: .currency(code: "USD")) without Apple Pay")
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.75)
-                            }
-                        }
-                        .font(.subheadline.weight(.semibold))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .foregroundStyle(.white.opacity(0.85))
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(app.isPurchasing)
-
-                    Text("License is stored on this iPhone. If Studio is running locally, the purchase is also recorded there.")
+                    Text("License stays on this iPhone.")
                         .font(.caption2)
                         .foregroundStyle(.white.opacity(0.4))
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 8)
-                .padding(.bottom, 16)
+                .padding(.top, 14)
+                .safeAreaPadding(.bottom, 12)
             }
         }
+        .padding(.top, 20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .veltaScreen()
+        .background {
+            VeltaTheme.ink
+                .ignoresSafeArea()
+        }
         .preferredColorScheme(.dark)
+    }
+
+    private func licenseRow(_ license: BeatLicense) -> some View {
+        Button {
+            tier = license.tier
+        } label: {
+            HStack(alignment: .top, spacing: 10) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(license.label)
+                        .font(.subheadline.weight(.semibold))
+                    Text(license.description)
+                        .font(.caption2)
+                        .foregroundStyle(.white.opacity(0.5))
+                        .lineLimit(+2)
+                }
+                Spacer(minLength: 8)
+                Text(license.price, format: .currency(code: "USD"))
+                    .font(.subheadline.weight(.bold))
+                    .monospacedDigit()
+            }
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(tier == license.tier ? VeltaTheme.accentSoft : Color.white.opacity(0.04))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .strokeBorder(tier == license.tier ? VeltaTheme.accent : VeltaTheme.inkLine)
+                    )
+            )
+            .foregroundStyle(.white)
+        }
+        .buttonStyle(.plain)
     }
 
     @ViewBuilder
@@ -152,7 +152,7 @@ struct CheckoutView: View {
         }
         .payWithApplePayButtonStyle(.white)
         .frame(maxWidth: .infinity)
-        .frame(height: 50)
+        .frame(height: 44)
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .disabled(app.isPurchasing)
         .accessibilityLabel("Buy with Apple Pay")

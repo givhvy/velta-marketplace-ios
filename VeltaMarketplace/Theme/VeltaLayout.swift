@@ -42,7 +42,10 @@ enum VeltaLayout {
     /// Extra air between For You Buy and the tab icons.
     static let forYouOverlayBottom: CGFloat = 16
 
-    static func forYouActionBottom(safeAreaBottom: CGFloat) -> CGFloat {
+    static func forYouActionBottom(safeAreaBottom: CGFloat, tabBarHidden: Bool = false) -> CGFloat {
+        if tabBarHidden {
+            return max(safeAreaBottom, 12) + forYouOverlayBottom
+        }
         let aboveBar = safeAreaBottom > 1 ? 0 : tabBarContentHeight
         return aboveBar + forYouOverlayBottom
     }

@@ -4,10 +4,12 @@ struct ExploreView: View {
     @Environment(AppState.self) private var app
     @Environment(\.veltaWidth) private var width
     @State private var genre: String?
+    @State private var hidePanePicker = false
 
     private var gutter: CGFloat { VeltaLayout.gutter(for: width) }
     private var listenWidth: CGFloat { VeltaLayout.listenCardWidth(for: width) }
     private var videoWidth: CGFloat { VeltaLayout.videoCardWidth(for: width) }
+    private var paneChromeHeight: CGFloat { 52 }
 
     private var genres: [String] {
         Array(Set(app.catalog.beats.flatMap(\.genres))).sorted()
@@ -26,74 +28,106 @@ struct ExploreView: View {
                 ZStack(alignment: .top) {
                     ForYouFeedView()
                     feedChrome(pane: $app.homePane)
+                        .opacity(hidePanePicker ? 0 : 1)
+                        .allowsHitTesting(!hidePanePicker)
                 }
             } else {
-                ZStack(alignment: .top) {
-                    beatsHome
-                    beatsTopBlur
-                    feedChrome(pane: $app.homePane)
-                }
+                beatsHome
+                    .safeAreaInset(edge: .top, spacing: 0) {
+                        if !hidePanePicker {
+                            ZStack {
+                                PhotosHeaderBlur(radius: 18, style: .header)
+                                    .ignoresSafeArea(edges: .top)
+                                beatsPaneChrome(pane: $app.homePane)
+                            }
+                            .frame(height: paneChromeHeight)
+                        }
+                    }
+                    .overlay(alignment: .top) {
+                        if hidePanePicker {
+                            PhotosHeaderBlur(radius: 14, style: .statusBar)
+                                .frame(height: 58)
+                                .frame(maxWidth: .infinity)
+                                .ignoresSafeArea(edges: .top)
+                                .allowsHitTesting(false)
+                        }
+                    }
             }
         }
+        .contentShape(Rectangle())
+        .simultaneousGesture(homePaneSwipeGesture)
         .veltaScreen()
         .toolbar(.hidden, for: .navigationBar)
+        .animation(.easeInOut(duration: 0.22), value: hidePanePicker)
+        .onChange(of: app.homePane) { _, pane in
+            if pane == .forYou {
+                setExploreChromeHidden(
+                    app.activeClipID != nil && app.activeClipID != app.catalog.clips.first?.id
+                )
+            } else {
+                setExploreChromeHidden(false)
+            }
+        }
+        .onChange(of: app.activeClipID) { _, id in
+            guard app.homePane == .forYou else { return }
+            setExploreChromeHidden(id != nil && id != app.catalog.clips.first?.id)
+        }
+    }
+
+    private func setExploreChromeHidden(_ hidden: Bool) {
+        hidePanePicker = hidden
+        app.hideBottomChrome = hidden
+    }
+
+    private var homePaneSwipeGesture: some Gesture {
+        DragGesture(minimumDistance: 28, coordinateSpace: .local)
+            .onEnded { value in
+                let dx = value.translation.width
+                let dy = value.translation.height
+                guard abs(dx) > abs(dy) * 1.15 else { return }
+                guard abs(dx) > 64 else { return }
+
+                withAnimation(.easeInOut(duration: 0.22)) {
+                    if dx < 0, app.homePane == .beats {
+                        app.homePane = .forYou
+                    } else if dx > 0, app.homePane == .forYou {
+                        app.homePane = .beats
+                    }
+                }
+            }
+    }
+
+    private func beatsPaneChrome(pane: Binding<HomePane>) -> some View {
+        ZStack {
+            HomePanePicker(pane: pane)
+                .frame(maxWidth: .infinity)
+
+            HStack {
+                Spacer(minLength: 0)
+                Image(systemName: "bell")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 32, height: 32)
+                    .accessibilityLabel("Notifications")
+            }
+            .padding(.horizontal, gutter)
+        }
+        .frame(height: paneChromeHeight)
+        .padding(.top, 2)
     }
 
     private func feedChrome(pane: Binding<HomePane>) -> some View {
-        Group {
-            if app.homePane == .beats {
-                HStack {
-                    Color.clear
-                        .frame(width: 32, height: 32)
-                    Spacer(minLength: 0)
-                    HomePanePicker(pane: pane)
-                    Spacer(minLength: 0)
-                    Image(systemName: "bell")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 32, height: 32)
-                        .accessibilityLabel("Notifications")
-                }
-                .padding(.horizontal, gutter)
-            } else {
-                HomePanePicker(pane: pane)
-                    .frame(maxWidth: .infinity)
-            }
-        }
-        .padding(.top, 4)
-        .padding(.bottom, 10)
-        .background {
-            if app.homePane == .forYou {
+        HomePanePicker(pane: pane)
+            .frame(maxWidth: .infinity)
+            .padding(.top, 4)
+            .padding(.bottom, 10)
+            .background {
                 LinearGradient(
                     colors: [.black.opacity(0.55), .clear],
                     startPoint: .top,
                     endPoint: .bottom
                 )
             }
-        }
-    }
-
-    private var beatsTopBlur: some View {
-        Rectangle()
-            .fill(.ultraThinMaterial)
-            .environment(\.colorScheme, .dark)
-            .overlay(Color.black.opacity(0.18))
-            .mask {
-                LinearGradient(
-                    stops: [
-                        .init(color: .black, location: 0),
-                        .init(color: .black, location: 0.48),
-                        .init(color: .black.opacity(0.45), location: 0.72),
-                        .init(color: .clear, location: 1),
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            }
-            .frame(height: 148)
-            .frame(maxWidth: .infinity)
-            .ignoresSafeArea(edges: .top)
-            .allowsHitTesting(false)
     }
 
     private var beatsHome: some View {
@@ -175,8 +209,15 @@ struct ExploreView: View {
             }
             .padding(.bottom, 28)
         }
-        .contentMargins(.top, 36, for: .scrollContent)
         .scrollClipDisabled()
+        .onScrollGeometryChange(for: CGFloat.self) { geometry in
+            geometry.contentOffset.y
+        } action: { _, offset in
+            let hide = offset > 36
+            if hide != hidePanePicker {
+                setExploreChromeHidden(hide)
+            }
+        }
     }
 
     private func section<Content: View>(

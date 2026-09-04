@@ -88,6 +88,12 @@ enum AppTab: Hashable, CaseIterable {
 enum AppRoute: Hashable {
     case beat(String)
     case studio
+    case login
+    case orders
+    case payments
+    case settings
+    case help
+    case legal(LegalDocument)
 }
 
 struct MobilePurchaseResponse: Decodable, Sendable {

@@ -11,59 +11,53 @@ struct BeatDetailView: View {
     var body: some View {
         Group {
             if let beat = app.catalog.beat(id: beatId) {
-                VStack(spacing: 0) {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 16) {
-                            BeatCoverView(beat: beat, webBase: app.catalog.webBase)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: min(200, max(148, appWidth * 0.48)))
-                                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        BeatCoverView(beat: beat, webBase: app.catalog.webBase)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: min(200, max(148, appWidth * 0.48)))
+                            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
 
-                            FlowGenreRow(genres: beat.genres)
+                        FlowGenreRow(genres: beat.genres)
 
-                            Text(beat.title)
-                                .font(.title2.weight(.bold))
-                                .foregroundStyle(.white)
-                                .fixedSize(horizontal: false, vertical: true)
+                        Text(beat.title)
+                            .font(.title2.weight(.bold))
+                            .foregroundStyle(.white)
+                            .fixedSize(horizontal: false, vertical: true)
 
-                            VStack(alignment: .leading, spacing: 4) {
-                                HStack(spacing: 6) {
-                                    Text(beat.sellerName)
-                                    if beat.sellerVerified {
-                                        Image(systemName: "checkmark.seal.fill")
-                                            .foregroundStyle(VeltaTheme.accent)
-                                    }
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack(spacing: 6) {
+                                Text(beat.sellerName)
+                                if beat.sellerVerified {
+                                    Image(systemName: "checkmark.seal.fill")
+                                        .foregroundStyle(VeltaTheme.accent)
                                 }
-                                Text("\(beat.bpm) BPM · \(beat.key)")
                             }
-                            .font(.subheadline)
-                            .foregroundStyle(.white.opacity(0.55))
+                            Text("\(beat.bpm) BPM · \(beat.key)")
+                        }
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.55))
 
-                            if let owned = app.ownedLicense(for: beat.id) {
-                                HStack {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundStyle(VeltaTheme.sky)
-                                    Text("You own \(owned.label)")
-                                        .font(.subheadline.weight(.semibold))
-                                }
-                                .padding(14)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(VeltaTheme.accentSoft, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        if let owned = app.ownedLicense(for: beat.id) {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundStyle(VeltaTheme.sky)
+                                Text("You own \(owned.label)")
+                                    .font(.subheadline.weight(.semibold))
                             }
+                            .padding(14)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(VeltaTheme.accentSoft, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        }
 
-                            VStack(spacing: 8) {
-                                ForEach(beat.licenses) { license in
-                                    licenseRow(license, selected: selectedLicense(in: beat)?.tier == license.tier)
-                                }
+                        VStack(spacing: 8) {
+                            ForEach(beat.licenses) { license in
+                                licenseRow(beat: beat, license, selected: selectedLicense(in: beat)?.tier == license.tier)
                             }
                         }
-                        .padding(gutter)
-                        .padding(.bottom, 12)
                     }
-
-                    if let license = selectedLicense(in: beat) {
-                        buyBar(beat: beat, license: license)
-                    }
+                    .padding(gutter)
+                    .padding(.bottom, 100)
                 }
                 .onAppear {
                     if selectedTier == nil {
@@ -95,86 +89,57 @@ struct BeatDetailView: View {
         beat.license(tier: selectedTier ?? "") ?? beat.licenses.first
     }
 
-    private func licenseRow(_ license: BeatLicense, selected: Bool) -> some View {
-        Button {
-            selectedTier = license.tier
-        } label: {
-            HStack(alignment: .center, spacing: 12) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(license.label)
-                        .font(.headline)
-                    Text(license.description)
-                        .font(.caption)
-                        .foregroundStyle(.white.opacity(0.5))
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                Spacer(minLength: 8)
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("$\(license.price, specifier: "%.2f")")
-                        .font(.headline)
-                        .monospacedDigit()
-                    Text(selected ? "Selected" : "Select")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(selected ? VeltaTheme.sky : .white.opacity(0.45))
-                }
-            }
-            .padding(14)
-            .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(selected ? VeltaTheme.accentSoft : Color.white.opacity(0.03))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .strokeBorder(selected ? VeltaTheme.accent : VeltaTheme.inkLine)
-                    )
-            )
-            .foregroundStyle(.white)
-        }
-        .buttonStyle(.plain)
-    }
-
-    private func buyBar(beat: Beat, license: BeatLicense) -> some View {
+    private func licenseRow(beat: Beat, _ license: BeatLicense, selected: Bool) -> some View {
         VStack(spacing: 10) {
-            Rectangle()
-                .fill(VeltaTheme.inkLine)
-                .frame(height: 0.5)
-
-            HStack(spacing: 10) {
-                Button {
-                    app.addToCart(beat, tier: license.tier)
-                    app.selectedTab = .cart
-                } label: {
-                    Text("Add to bag")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(
-                            Capsule()
-                                .strokeBorder(VeltaTheme.inkLine)
-                                .background(VeltaTheme.inkElevated, in: Capsule())
-                        )
-                        .foregroundStyle(.white)
+            Button {
+                selectedTier = license.tier
+            } label: {
+                HStack(alignment: .center, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(license.label)
+                            .font(.headline)
+                        Text(license.description)
+                            .font(.caption)
+                            .foregroundStyle(.white.opacity(0.5))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: 8)
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("$\(license.price, specifier: "%.2f")")
+                            .font(.headline)
+                            .monospacedDigit()
+                        Text(selected ? "Selected" : "Select")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(selected ? VeltaTheme.sky : .white.opacity(0.45))
+                    }
                 }
-                .buttonStyle(.plain)
+                .foregroundStyle(.white)
+            }
+            .buttonStyle(.plain)
 
+            if selected {
                 Button {
                     app.openCheckout(beat, tier: license.tier)
                 } label: {
                     Text("Buy \(license.label)")
                         .font(.headline)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
+                        .padding(.vertical, 12)
                         .background(VeltaTheme.accent, in: Capsule())
                         .foregroundStyle(.white)
                 }
                 .buttonStyle(.plain)
             }
-            .padding(.horizontal, gutter)
-            .padding(.bottom, 8)
         }
-        .background(VeltaTheme.ink)
-        .accessibilityElement(children: .contain)
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(selected ? VeltaTheme.accentSoft : Color.white.opacity(0.03))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .strokeBorder(selected ? VeltaTheme.accent : VeltaTheme.inkLine)
+                )
+        )
     }
 }
 
