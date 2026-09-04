@@ -12,7 +12,8 @@ struct ForYouFeedView: View {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 0) {
                     ForEach(clips) { clip in
-                        clipPage(clip, size: geo.size, bottomInset: geo.safeAreaInsets.bottom)
+                        clipPage(clip, bottomInset: geo.safeAreaInsets.bottom)
+                            .containerRelativeFrame(.vertical)
                             .id(clip.id)
                     }
                 }
@@ -22,7 +23,9 @@ struct ForYouFeedView: View {
             .scrollPosition(id: $app.activeClipID)
             .scrollIndicators(.hidden)
             .background(.black)
+            .clipped()
         }
+        .ignoresSafeArea(edges: [.top, .bottom])
         .onAppear {
             if app.activeClipID == nil {
                 app.activeClipID = clips.first?.id
@@ -30,7 +33,7 @@ struct ForYouFeedView: View {
         }
     }
 
-    private func clipPage(_ clip: UsageClip, size: CGSize, bottomInset: CGFloat) -> some View {
+    private func clipPage(_ clip: UsageClip, bottomInset: CGFloat) -> some View {
         let beat = app.catalog.beat(id: clip.beatId)
         let active = app.activeClipID == clip.id
 
@@ -39,19 +42,22 @@ struct ForYouFeedView: View {
 
             if let url = clip.url {
                 LoopingVideoView(url: url, isPlaying: active)
-                    .frame(width: size.width, height: size.height)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea()
                     .clipped()
             } else if let beat {
                 BeatCoverView(beat: beat, webBase: app.catalog.webBase)
-                    .frame(width: size.width, height: size.height)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea()
                     .clipped()
             }
 
             LinearGradient(
-                colors: [.black.opacity(0.35), .clear, .black.opacity(0.78)],
+                colors: [.black.opacity(0.42), .clear, .clear, .black.opacity(0.88)],
                 startPoint: .top,
                 endPoint: .bottom
             )
+            .ignoresSafeArea()
 
             HStack(alignment: .bottom, spacing: 12) {
                 VStack(alignment: .leading, spacing: 8) {
@@ -105,7 +111,7 @@ struct ForYouFeedView: View {
             .padding(.bottom, VeltaLayout.forYouActionBottom(safeAreaBottom: bottomInset, tabBarHidden: app.hideBottomChrome))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }
-        .frame(width: size.width, height: size.height)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .clipped()
     }
 

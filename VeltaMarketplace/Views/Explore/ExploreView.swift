@@ -25,12 +25,15 @@ struct ExploreView: View {
 
         Group {
             if app.homePane == .forYou {
-                ZStack(alignment: .top) {
-                    ForYouFeedView()
-                    feedChrome(pane: $app.homePane)
-                        .opacity(hidePanePicker ? 0 : 1)
-                        .allowsHitTesting(!hidePanePicker)
-                }
+                ForYouFeedView()
+                    .ignoresSafeArea(edges: [.top, .bottom])
+                    .overlay(alignment: .top) {
+                        PhotosHeaderBlur(radius: 14, style: .statusBar)
+                            .frame(height: 58)
+                            .frame(maxWidth: .infinity)
+                            .ignoresSafeArea(edges: .top)
+                            .allowsHitTesting(false)
+                    }
             } else {
                 beatsHome
                     .safeAreaInset(edge: .top, spacing: 0) {
@@ -114,20 +117,6 @@ struct ExploreView: View {
         }
         .frame(height: paneChromeHeight)
         .padding(.top, 2)
-    }
-
-    private func feedChrome(pane: Binding<HomePane>) -> some View {
-        HomePanePicker(pane: pane)
-            .frame(maxWidth: .infinity)
-            .padding(.top, 4)
-            .padding(.bottom, 10)
-            .background {
-                LinearGradient(
-                    colors: [.black.opacity(0.55), .clear],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            }
     }
 
     private var beatsHome: some View {

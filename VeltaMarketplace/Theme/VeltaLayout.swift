@@ -44,10 +44,9 @@ enum VeltaLayout {
 
     static func forYouActionBottom(safeAreaBottom: CGFloat, tabBarHidden: Bool = false) -> CGFloat {
         if tabBarHidden {
-            return max(safeAreaBottom, 12) + forYouOverlayBottom
+            return max(safeAreaBottom, 16) + forYouOverlayBottom
         }
-        let aboveBar = safeAreaBottom > 1 ? 0 : tabBarContentHeight
-        return aboveBar + forYouOverlayBottom
+        return tabBarContentHeight + max(safeAreaBottom, 4) + forYouOverlayBottom
     }
 }
 

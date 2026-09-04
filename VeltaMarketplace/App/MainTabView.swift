@@ -36,7 +36,7 @@ struct MainTabView: View {
                 }
                 .environment(\.veltaWidth, geo.size.width)
             }
-            .padding(.bottom, app.hideBottomChrome ? 0 : reservedBottomChrome)
+            .padding(.bottom, contentBottomInset)
 
             bottomChrome
                 .offset(y: app.hideBottomChrome ? reservedBottomChrome + 24 : 0)
@@ -82,6 +82,12 @@ struct MainTabView: View {
         .onChange(of: app.selectedTab) { _, _ in
             app.hideBottomChrome = false
         }
+    }
+
+    private var contentBottomInset: CGFloat {
+        if app.hideBottomChrome { return 0 }
+        if app.selectedTab == .explore && app.homePane == .forYou { return 0 }
+        return reservedBottomChrome
     }
 
     private var showsMiniPlayer: Bool {
