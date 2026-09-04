@@ -1,0 +1,170 @@
+[
+  {
+    "id": "beat_001",
+    "slug": "midnight-trap-drake-type",
+    "title": "Midnight Trap - Drake x Future Type Beat",
+    "bpm": 142,
+    "key": "F# min",
+    "genres": ["Trap", "Hip Hop"],
+    "tags": ["drake", "future", "dark", "melodic"],
+    "coverGradient": "from-sky-900 via-blue-950 to-black",
+    "coverImageUrl": "/images/hero-covers/midnight-trap.jpg",
+    "previewUrl": null,
+    "sellerId": "seller_velta",
+    "sellerName": "Velta Beats",
+    "sellerVerified": true,
+    "plays": 12840,
+    "likes": 892,
+    "featured": true,
+    "licenses": [
+      {
+        "tier": "mp3",
+        "label": "MP3 Lease",
+        "price": 29.99,
+        "whopPlanId": null,
+        "description": "Tagged MP3, 50k streams, 1 music video"
+      },
+      {
+        "tier": "wav",
+        "label": "WAV Lease",
+        "price": 49.99,
+        "whopPlanId": null,
+        "description": "Untagged WAV, 150k streams, 2 music videos"
+      },
+      {
+        "tier": "exclusive",
+        "label": "Exclusive",
+        "price": 299.99,
+        "whopPlanId": null,
+        "description": "Full exclusive rights, beat removed from store"
+      }
+    ],
+    "createdAt": "2026-08-15T10:00:00.000Z"
+  },
+  {
+    "id": "beat_002",
+    "slug": "soul-rnb-brent-type",
+    "title": "Velvet Soul - Brent Faiyaz x R&B Type Beat",
+    "bpm": 88,
+    "key": "D maj",
+    "genres": ["R&B", "Soul"],
+    "tags": ["brent faiyaz", "rnb", "smooth", "vocal"],
+    "coverGradient": "from-slate-700 via-slate-900 to-black",
+    "coverImageUrl": "/images/hero-covers/velvet-soul.jpg",
+    "previewUrl": null,
+    "sellerId": "seller_velta",
+    "sellerName": "Velta Beats",
+    "sellerVerified": true,
+    "plays": 8420,
+    "likes": 614,
+    "featured": true,
+    "licenses": [
+      {
+        "tier": "mp3",
+        "label": "MP3 Lease",
+        "price": 34.99,
+        "whopPlanId": null,
+        "description": "Tagged MP3, 50k streams, 1 music video"
+      },
+      {
+        "tier": "wav",
+        "label": "WAV Lease",
+        "price": 54.99,
+        "whopPlanId": null,
+        "description": "Untagged WAV, 150k streams, 2 music videos"
+      },
+      {
+        "tier": "exclusive",
+        "label": "Exclusive",
+        "price": 349.99,
+        "whopPlanId": null,
+        "description": "Full exclusive rights, beat removed from store"
+      }
+    ],
+    "createdAt": "2026-08-20T14:30:00.000Z"
+  },
+  {
+    "id": "beat_003",
+    "slug": "boom-bap-90s-classic",
+    "title": "Red Rum - 90s Boom Bap x Hip Hop",
+    "bpm": 96,
+    "key": "Cm",
+    "genres": ["Boom Bap", "Hip Hop"],
+    "tags": ["boom bap", "90s", "sample", "gritty"],
+    "coverGradient": "from-amber-900 via-orange-950 to-black",
+    "coverImageUrl": "/images/hero-covers/red-rum.jpg",
+    "previewUrl": null,
+    "sellerId": "seller_blackrose",
+    "sellerName": "Black Rose Beatz",
+    "sellerVerified": true,
+    "plays": 15600,
+    "likes": 1102,
+    "featured": false,
+    "licenses": [
+      {
+        "tier": "mp3",
+        "label": "MP3 Lease",
+        "price": 39.99,
+        "whopPlanId": null,
+        "description": "Tagged MP3, 50k streams, 1 music video"
+      },
+      {
+        "tier": "wav",
+        "label": "WAV Lease",
+        "price": 51.0,
+        "whopPlanId": null,
+        "description": "Untagged WAV, 150k streams, 2 music videos"
+      },
+      {
+        "tier": "exclusive",
+        "label": "Exclusive",
+        "price": 399.99,
+        "whopPlanId": null,
+        "description": "Full exclusive rights, beat removed from store"
+      }
+    ],
+    "createdAt": "2026-08-28T09:15:00.000Z"
+  },
+  {
+    "id": "beat_004",
+    "slug": "night-drive-afro-trap",
+    "title": "Night Drive - Afro Trap x Burna Type Beat",
+    "bpm": 104,
+    "key": "G min",
+    "genres": ["Afrobeats", "Trap"],
+    "tags": ["afro", "burna", "night", "dancehall"],
+    "coverGradient": "from-indigo-900 via-violet-950 to-black",
+    "coverImageUrl": "/images/hero-covers/night-drive.jpg",
+    "previewUrl": null,
+    "sellerId": "seller_velta",
+    "sellerName": "Velta Beats",
+    "sellerVerified": true,
+    "plays": 11240,
+    "likes": 748,
+    "featured": true,
+    "licenses": [
+      {
+        "tier": "mp3",
+        "label": "MP3 Lease",
+        "price": 32.99,
+        "whopPlanId": null,
+        "description": "Tagged MP3, 50k streams, 1 music video"
+      },
+      {
+        "tier": "wav",
+        "label": "WAV Lease",
+        "price": 52.99,
+        "whopPlanId": null,
+        "description": "Untagged WAV, 150k streams, 2 music videos"
+      },
+      {
+        "tier": "exclusive",
+        "label": "Exclusive",
+        "price": 319.99,
+        "whopPlanId": null,
+        "description": "Full exclusive rights, beat removed from store"
+      }
+    ],
+    "createdAt": "2026-09-01T18:00:00.000Z"
+  }
+]

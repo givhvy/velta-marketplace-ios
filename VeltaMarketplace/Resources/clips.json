@@ -1,0 +1,56 @@
+[
+  {
+    "id": "clip_001",
+    "beatId": "beat_001",
+    "creatorName": "NOVA",
+    "caption": "Midnight Trap in the booth. First take.",
+    "videoURL": "https://videos.pexels.com/video-files/3209298/3209298-hd_1280_720_25fps.mp4",
+    "likes": 12840,
+    "location": "Atlanta"
+  },
+  {
+    "id": "clip_002",
+    "beatId": "beat_002",
+    "creatorName": "Lina V.",
+    "caption": "Velvet Soul late-night vocals.",
+    "videoURL": "https://videos.pexels.com/video-files/2022395/2022395-hd_1280_720_30fps.mp4",
+    "likes": 9021,
+    "location": "London"
+  },
+  {
+    "id": "clip_003",
+    "beatId": "beat_003",
+    "creatorName": "Kade",
+    "caption": "Red Rum boom bap cypher.",
+    "videoURL": "https://videos.pexels.com/video-files/3571264/3571264-hd_1280_720_30fps.mp4",
+    "likes": 15402,
+    "location": "Brooklyn"
+  },
+  {
+    "id": "clip_004",
+    "beatId": "beat_004",
+    "creatorName": "Amara",
+    "caption": "Night Drive — dancing on the Afro trap.",
+    "videoURL": "https://videos.pexels.com/video-files/5319759/5319759-hd_1280_720_25fps.mp4",
+    "likes": 11028,
+    "location": "Lagos"
+  },
+  {
+    "id": "clip_005",
+    "beatId": "beat_001",
+    "creatorName": "Jett",
+    "caption": "Wrote the hook over this Velta lease.",
+    "videoURL": "https://videos.pexels.com/video-files/853889/853889-hd_1280_720_25fps.mp4",
+    "likes": 6744,
+    "location": "Toronto"
+  },
+  {
+    "id": "clip_006",
+    "beatId": "beat_004",
+    "creatorName": "Sol",
+    "caption": "Studio session on Night Drive.",
+    "videoURL": "https://videos.pexels.com/video-files/5752724/5752724-uhd_2560_1440_30fps.mp4",
+    "likes": 8810,
+    "location": "Paris"
+  }
+]
