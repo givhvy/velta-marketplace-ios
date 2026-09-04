@@ -25,6 +25,7 @@
 		634CD7CEF0A68EB0A869D131 /* VeltaMarketplaceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289B587BB53110D6D531C609 /* VeltaMarketplaceApp.swift */; };
 		6B45DCEDDDB966403843F726 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2C86E90477D11468C1C624 /* CartView.swift */; };
 		71CDEEFBCF0037F6E67AA3F4 /* BeatDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F6AED2C609861E3476B0E /* BeatDetailView.swift */; };
+		7218E4FCDD5DCFC4CDEC50F9 /* LicensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C517CD967293F328DE56009 /* LicensesView.swift */; };
 		739720247735184212108966 /* MediaCDN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D127053D8A62352402003D /* MediaCDN.swift */; };
 		778795EB8197FF258E254632 /* ForYouFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D63F6A258585F75859DA5E5 /* ForYouFeedView.swift */; };
 		796DA26A2564EBB68C0A0F8A /* MarketplaceCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA0F37BB9DC983617BE5D80 /* MarketplaceCards.swift */; };
@@ -39,7 +40,6 @@
 		C99C2ED19B3B8A3EBF4A0CBE /* VeltaTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21677FBA336C63A221183D25 /* VeltaTheme.swift */; };
 		CB80CA65CFCBD8CE6B868C4E /* clips.json in Resources */ = {isa = PBXBuildFile; fileRef = 081A6D87345DADC870740FAE /* clips.json */; };
 		DF439202A35B463E12F15D0D /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8963F7608C171719F90352 /* AccountSettingsView.swift */; };
-		DF8B722AE87E4A203FEF9935 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6F42C06A739E5EF72CD39 /* LibraryView.swift */; };
 		DFC9299A76B2A877FE906FD6 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80594326C72EF282A1C653CA /* HelpView.swift */; };
 		E1B6CAE04A5AFF77482A7BC4 /* PhotosHeaderBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012749D43737E1DDC0BD9A30 /* PhotosHeaderBlur.swift */; };
 		E1F90EC6547925065A6CEC04 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C464060E597721DEFCA7B8C /* CheckoutView.swift */; };
@@ -72,6 +72,7 @@
 		80594326C72EF282A1C653CA /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		86F38DD0EB658EE521E4EA95 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		8A8963F7608C171719F90352 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
+		8C517CD967293F328DE56009 /* LicensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicensesView.swift; sourceTree = "<group>"; };
 		8DE122051712BFB6ED4D9414 /* LegalDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalDocumentView.swift; sourceTree = "<group>"; };
 		8E1513015AB6ECEC7B977B41 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		938053E5CBD3DF23EABDF932 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -84,7 +85,6 @@
 		BF79AC2DB95B8D3896C85CF6 /* PreviewPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPlayer.swift; sourceTree = "<group>"; };
 		D1C81FA6217484B46445D173 /* PaymentMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsView.swift; sourceTree = "<group>"; };
 		D2A56C1EA102B28C48E986E7 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		D4A6F42C06A739E5EF72CD39 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		DA2C86E90477D11468C1C624 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		DB301AAD27BBB74934B498F7 /* VideoHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoHomeView.swift; sourceTree = "<group>"; };
 		DF09636005B8705959DE16DF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -287,8 +287,8 @@
 		CEB52A17C75AB63952448520 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				D4A6F42C06A739E5EF72CD39 /* LibraryView.swift */,
 				BF083F3AAACA9E5E9BDEB922 /* LicenseDetailView.swift */,
+				8C517CD967293F328DE56009 /* LicensesView.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -426,8 +426,8 @@
 				778795EB8197FF258E254632 /* ForYouFeedView.swift in Sources */,
 				DFC9299A76B2A877FE906FD6 /* HelpView.swift in Sources */,
 				3232B38D1393F917F70E746C /* LegalDocumentView.swift in Sources */,
-				DF8B722AE87E4A203FEF9935 /* LibraryView.swift in Sources */,
 				1A2A324644242752AA206C2A /* LicenseDetailView.swift in Sources */,
+				7218E4FCDD5DCFC4CDEC50F9 /* LicensesView.swift in Sources */,
 				33D2793988D0C13C6A2E5E3D /* LoginView.swift in Sources */,
 				ECDF395C4E0B35BF5FE3FE2F /* LoopingVideoView.swift in Sources */,
 				925188BEBB00B0D945B7D25F /* MainTabView.swift in Sources */,

@@ -139,12 +139,13 @@ struct CheckoutTarget: Identifiable, Hashable {
 }
 
 enum AppTab: Hashable, CaseIterable {
-    case video, beats, cart, library, menu
+    case video, beats, cart, menu
 }
 
 enum AppRoute: Hashable {
     case beat(String)
     case license(String)
+    case licenses
     case studio
     case login
     case orders

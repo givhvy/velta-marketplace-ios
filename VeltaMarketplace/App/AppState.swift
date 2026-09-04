@@ -9,6 +9,7 @@ final class AppState {
     var selectedTab: AppTab = .beats
     var isBeatSearchPresented = false
     var pendingBeatDetailId: String?
+    var pendingMenuRoute: AppRoute?
     var activeClipID: String?
     var nowPlayingID: String?
     var likedClipIDs: [String] = []
@@ -169,7 +170,7 @@ final class AppState {
         if ownedLicense(for: beat.id) != nil {
             toast = "\(beat.title) is already in your library"
             checkout = nil
-            if openLibrary { selectedTab = .library }
+            if openLibrary { openLicenses() }
             return
         }
 
@@ -195,7 +196,7 @@ final class AppState {
         persistLicenses()
         checkout = nil
         toast = "Licensed \(beat.title) · \(license.label)"
-        if openLibrary { selectedTab = .library }
+        if openLibrary { openLicenses() }
     }
 
     func purchaseCart() async {
@@ -204,7 +205,12 @@ final class AppState {
             guard let beat = catalog.beat(id: item.beatId) else { continue }
             await purchase(beat, tier: item.tier, openLibrary: false)
         }
-        selectedTab = .library
+        openLicenses()
+    }
+
+    func openLicenses() {
+        selectedTab = .menu
+        pendingMenuRoute = .licenses
     }
 
     func openStudio() {

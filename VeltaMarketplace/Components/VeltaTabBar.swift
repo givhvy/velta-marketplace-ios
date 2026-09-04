@@ -9,7 +9,6 @@ struct VeltaTabBar: View {
             tabButton(.video, icon: "play.rectangle.fill")
             tabButton(.beats, icon: "music.note.list")
             tabButton(.cart, icon: "bag", badge: cartCount)
-            tabButton(.library, icon: "heart")
             tabButton(.menu, icon: "line.3.horizontal")
         }
         .padding(.horizontal, 10)
@@ -55,7 +54,6 @@ struct VeltaTabBar: View {
         case .video: "Video"
         case .beats: "Beats"
         case .cart: "Bag"
-        case .library: "Library"
         case .menu: "Menu"
         }
     }

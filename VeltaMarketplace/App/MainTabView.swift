@@ -5,7 +5,6 @@ struct MainTabView: View {
     @State private var videoPath: [AppRoute] = []
     @State private var beatsPath: [AppRoute] = []
     @State private var cartPath: [AppRoute] = []
-    @State private var libraryPath: [AppRoute] = []
     @State private var menuPath: [AppRoute] = []
 
     var body: some View {
@@ -25,10 +24,6 @@ struct MainTabView: View {
                     tabStack(path: $cartPath) { CartView() }
                         .opacity(app.selectedTab == .cart ? 1 : 0)
                         .allowsHitTesting(app.selectedTab == .cart)
-
-                    tabStack(path: $libraryPath) { LibraryView() }
-                        .opacity(app.selectedTab == .library ? 1 : 0)
-                        .allowsHitTesting(app.selectedTab == .library)
 
                     tabStack(path: $menuPath) { AccountView() }
                         .opacity(app.selectedTab == .menu ? 1 : 0)
@@ -98,6 +93,11 @@ struct MainTabView: View {
             beatsPath.append(.beat(beatId))
             app.pendingBeatDetailId = nil
         }
+        .onChange(of: app.pendingMenuRoute) { _, route in
+            guard let route else { return }
+            menuPath.append(route)
+            app.pendingMenuRoute = nil
+        }
     }
 
     private var contentBottomInset: CGFloat {
@@ -158,6 +158,8 @@ struct MainTabView: View {
             BeatDetailView(beatId: id)
         case .license(let id):
             LicenseDetailView(licenseId: id)
+        case .licenses:
+            LicensesView()
         case .studio:
             StudioView()
         case .login:

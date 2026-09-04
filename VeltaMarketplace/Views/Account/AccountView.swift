@@ -63,12 +63,12 @@ struct AccountView: View {
                 menuLabel(title: "Studio", subtitle: "Uploads, payments, and live beats", systemImage: "square.grid.2x2")
             }
             .buttonStyle(.plain)
-            Button { app.selectedTab = .library } label: {
+            NavigationLink(value: AppRoute.licenses) {
                 menuLabel(title: "Licenses", subtitle: "\(app.licenses.count) owned in this app", systemImage: "opticaldisc")
             }
             .buttonStyle(.plain)
             Button { app.selectedTab = .cart } label: {
-                menuLabel(title: "Bag", subtitle: app.cart.isEmpty ? "Empty" : "\(app.cartCount) items", systemImage: "bag")
+                menuLabel(title: "Bag", subtitle: bagSubtitle, systemImage: "bag")
             }
             .buttonStyle(.plain)
 
@@ -84,6 +84,18 @@ struct AccountView: View {
                 .fill(Color.white.opacity(0.04))
         )
         .padding(.horizontal, VeltaLayout.gutter(for: width))
+    }
+
+    private var bagSubtitle: String {
+        var parts: [String] = []
+        if !app.cart.isEmpty {
+            parts.append("\(app.cartCount) in bag")
+        }
+        let likedCount = app.likedBeats().count
+        if likedCount > 0 {
+            parts.append("\(likedCount) liked")
+        }
+        return parts.isEmpty ? "Empty" : parts.joined(separator: " · ")
     }
 
     private var catalogCard: some View {
