@@ -11,51 +11,43 @@ struct MainTabView: View {
     var body: some View {
         @Bindable var app = app
 
-        GeometryReader { geo in
-            ZStack {
-                tabStack(path: $explorePath) { ExploreView() }
-                    .opacity(app.selectedTab == .explore ? 1 : 0)
-                    .allowsHitTesting(app.selectedTab == .explore)
+        ZStack(alignment: .bottom) {
+            GeometryReader { geo in
+                ZStack {
+                    tabStack(path: $explorePath) { ExploreView() }
+                        .opacity(app.selectedTab == .explore ? 1 : 0)
+                        .allowsHitTesting(app.selectedTab == .explore)
 
-                tabStack(path: $searchPath) { SearchView() }
-                    .opacity(app.selectedTab == .search ? 1 : 0)
-                    .allowsHitTesting(app.selectedTab == .search)
+                    tabStack(path: $searchPath) { SearchView() }
+                        .opacity(app.selectedTab == .search ? 1 : 0)
+                        .allowsHitTesting(app.selectedTab == .search)
 
-                tabStack(path: $cartPath) { CartView() }
-                    .opacity(app.selectedTab == .cart ? 1 : 0)
-                    .allowsHitTesting(app.selectedTab == .cart)
+                    tabStack(path: $cartPath) { CartView() }
+                        .opacity(app.selectedTab == .cart ? 1 : 0)
+                        .allowsHitTesting(app.selectedTab == .cart)
 
-                tabStack(path: $libraryPath) { LibraryView() }
-                    .opacity(app.selectedTab == .library ? 1 : 0)
-                    .allowsHitTesting(app.selectedTab == .library)
+                    tabStack(path: $libraryPath) { LibraryView() }
+                        .opacity(app.selectedTab == .library ? 1 : 0)
+                        .allowsHitTesting(app.selectedTab == .library)
 
-                tabStack(path: $menuPath) { AccountView() }
-                    .opacity(app.selectedTab == .menu ? 1 : 0)
-                    .allowsHitTesting(app.selectedTab == .menu)
-            }
-            .environment(\.veltaWidth, geo.size.width)
-        }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            VStack(spacing: 0) {
-                if app.homePane == .beats || app.selectedTab != .explore,
-                   let id = app.nowPlayingID,
-                   let beat = app.catalog.beat(id: id)
-                {
-                    MiniPlayerBar(beat: beat, webBase: app.catalog.webBase) {
-                        app.selectedTab = .explore
-                        app.homePane = .beats
-                    }
+                    tabStack(path: $menuPath) { AccountView() }
+                        .opacity(app.selectedTab == .menu ? 1 : 0)
+                        .allowsHitTesting(app.selectedTab == .menu)
                 }
-                VeltaTabBar(selection: $app.selectedTab, cartCount: app.cartCount)
-                    .background(VeltaTheme.ink.ignoresSafeArea(edges: .bottom))
+                .environment(\.veltaWidth, geo.size.width)
             }
+            .padding(.bottom, reservedBottomChrome)
+
+            bottomChrome
         }
+        .ignoresSafeArea(edges: .bottom)
         .background(VeltaTheme.ink.ignoresSafeArea())
         .sheet(item: $app.checkout) { target in
             if let beat = app.catalog.beat(id: target.beatId) {
                 CheckoutView(beat: beat, tier: target.tier)
-                    .presentationDetents([.medium, .large])
+                    .presentationDetents([.large])
                     .presentationDragIndicator(.visible)
+                    .presentationCornerRadius(28)
             }
         }
         .overlay(alignment: .top) {
@@ -77,6 +69,36 @@ struct MainTabView: View {
         }
         .animation(.easeOut(duration: 0.2), value: app.toast)
         .animation(.easeOut(duration: 0.15), value: app.selectedTab)
+    }
+
+    private var showsMiniPlayer: Bool {
+        (app.homePane == .beats || app.selectedTab != .explore) && app.nowPlayingID != nil
+    }
+
+    private var reservedBottomChrome: CGFloat {
+        VeltaLayout.tabBarContentHeight + (showsMiniPlayer ? VeltaLayout.miniPlayerHeight : 0)
+    }
+
+    private var bottomChrome: some View {
+        VStack(spacing: 0) {
+            if showsMiniPlayer,
+               let id = app.nowPlayingID,
+               let beat = app.catalog.beat(id: id)
+            {
+                MiniPlayerBar(beat: beat, webBase: app.catalog.webBase) {
+                    app.selectedTab = .explore
+                    app.homePane = .beats
+                }
+            }
+            VeltaTabBar(
+                selection: Binding(
+                    get: { app.selectedTab },
+                    set: { app.selectedTab = $0 }
+                ),
+                cartCount: app.cartCount
+            )
+        }
+        .background(VeltaTheme.ink)
     }
 
     private func tabStack<Content: View>(

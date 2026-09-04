@@ -36,8 +36,16 @@ enum VeltaLayout {
         width >= 700
     }
 
-    /// Clears VeltaTabBar + spacing so For You side actions never sit on the tab icons.
-    static let forYouOverlayBottom: CGFloat = 88
+    /// 8 top + 44 icons + 18 bottom (clears the home-indicator pill).
+    static let tabBarContentHeight: CGFloat = 70
+    static let miniPlayerHeight: CGFloat = 56
+    /// Extra air between For You Buy and the tab icons.
+    static let forYouOverlayBottom: CGFloat = 16
+
+    static func forYouActionBottom(safeAreaBottom: CGFloat) -> CGFloat {
+        let aboveBar = safeAreaBottom > 1 ? 0 : tabBarContentHeight
+        return aboveBar + forYouOverlayBottom
+    }
 }
 
 extension View {

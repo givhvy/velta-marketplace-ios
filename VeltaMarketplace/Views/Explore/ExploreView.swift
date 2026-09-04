@@ -28,10 +28,10 @@ struct ExploreView: View {
                     feedChrome(pane: $app.homePane)
                 }
             } else {
-                VStack(spacing: 0) {
-                    topBar
-                    HomePanePicker(pane: $app.homePane)
+                ZStack(alignment: .top) {
                     beatsHome
+                    beatsTopBlur
+                    feedChrome(pane: $app.homePane)
                 }
             }
         }
@@ -40,47 +40,60 @@ struct ExploreView: View {
     }
 
     private func feedChrome(pane: Binding<HomePane>) -> some View {
-        let side: CGFloat = width < 380 ? 44 : 100
-        return HStack(spacing: 8) {
-            VeltaWordmark(markSize: 28, showsName: width >= 380)
-                .frame(width: side, alignment: .leading)
-            Spacer(minLength: 0)
-            HomePanePicker(pane: pane)
-            Spacer(minLength: 0)
-            Image(systemName: "bell")
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(.white)
-                .frame(width: side, alignment: .trailing)
+        Group {
+            if app.homePane == .beats {
+                HStack {
+                    Color.clear
+                        .frame(width: 32, height: 32)
+                    Spacer(minLength: 0)
+                    HomePanePicker(pane: pane)
+                    Spacer(minLength: 0)
+                    Image(systemName: "bell")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 32, height: 32)
+                        .accessibilityLabel("Notifications")
+                }
+                .padding(.horizontal, gutter)
+            } else {
+                HomePanePicker(pane: pane)
+                    .frame(maxWidth: .infinity)
+            }
         }
-        .padding(.horizontal, gutter)
-        .padding(.top, 6)
-        .padding(.bottom, 18)
-        .background(
-            LinearGradient(
-                colors: [.black.opacity(0.65), .clear],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .padding(.top, 4)
+        .padding(.bottom, 10)
+        .background {
+            if app.homePane == .forYou {
+                LinearGradient(
+                    colors: [.black.opacity(0.55), .clear],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            }
+        }
     }
 
-    private var topBar: some View {
-        HStack(spacing: 8) {
-            VeltaWordmark(markSize: 28, showsName: width >= 380)
-            Spacer()
-            if app.homePane == .beats {
-                Text("Explore")
-                    .font(.headline.weight(.bold))
-                    .foregroundStyle(.white)
-                Spacer()
+    private var beatsTopBlur: some View {
+        Rectangle()
+            .fill(.ultraThinMaterial)
+            .environment(\.colorScheme, .dark)
+            .overlay(Color.black.opacity(0.18))
+            .mask {
+                LinearGradient(
+                    stops: [
+                        .init(color: .black, location: 0),
+                        .init(color: .black, location: 0.48),
+                        .init(color: .black.opacity(0.45), location: 0.72),
+                        .init(color: .clear, location: 1),
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
             }
-            Image(systemName: "bell")
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(.white)
-                .frame(width: 32, height: 32)
-        }
-        .padding(.horizontal, gutter)
-        .padding(.vertical, 8)
+            .frame(height: 148)
+            .frame(maxWidth: .infinity)
+            .ignoresSafeArea(edges: .top)
+            .allowsHitTesting(false)
     }
 
     private var beatsHome: some View {
@@ -162,6 +175,8 @@ struct ExploreView: View {
             }
             .padding(.bottom, 28)
         }
+        .contentMargins(.top, 36, for: .scrollContent)
+        .scrollClipDisabled()
     }
 
     private func section<Content: View>(

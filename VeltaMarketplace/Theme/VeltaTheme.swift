@@ -49,46 +49,6 @@ enum VeltaTheme {
     }
 }
 
-struct VeltaMark: View {
-    var size: CGFloat = 28
-    var filled = true
-
-    var body: some View {
-        Image("VeltaLogo")
-            .renderingMode(.template)
-            .resizable()
-            .scaledToFit()
-            .padding(size * 0.18)
-            .foregroundStyle(.white)
-            .frame(width: size, height: size)
-            .background {
-                if filled {
-                    RoundedRectangle(cornerRadius: size * 0.28, style: .continuous)
-                        .fill(VeltaTheme.accent)
-                }
-            }
-            .accessibilityLabel("Velta")
-    }
-}
-
-struct VeltaWordmark: View {
-    var markSize: CGFloat = 28
-    var showsName: Bool = true
-
-    var body: some View {
-        HStack(spacing: 8) {
-            VeltaMark(size: markSize)
-            if showsName {
-                Text("Velta")
-                    .font(.headline.weight(.bold))
-                    .foregroundStyle(.white)
-            }
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Velta")
-    }
-}
-
 struct VeltaScreenBackground: ViewModifier {
     func body(content: Content) -> some View {
         content

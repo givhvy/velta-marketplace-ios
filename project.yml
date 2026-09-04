@@ -52,7 +52,9 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         GENERATE_INFOPLIST_FILE: NO
-    dependencies: []
+        CODE_SIGN_ENTITLEMENTS: VeltaMarketplace/VeltaMarketplace.entitlements
+    dependencies:
+      - sdk: PassKit.framework
 
 schemes:
   VeltaMarketplace:

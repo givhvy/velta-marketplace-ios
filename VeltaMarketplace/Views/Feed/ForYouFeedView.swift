@@ -12,7 +12,7 @@ struct ForYouFeedView: View {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 0) {
                     ForEach(clips) { clip in
-                        clipPage(clip, size: geo.size)
+                        clipPage(clip, size: geo.size, bottomInset: geo.safeAreaInsets.bottom)
                             .id(clip.id)
                     }
                 }
@@ -30,7 +30,7 @@ struct ForYouFeedView: View {
         }
     }
 
-    private func clipPage(_ clip: UsageClip, size: CGSize) -> some View {
+    private func clipPage(_ clip: UsageClip, size: CGSize, bottomInset: CGFloat) -> some View {
         let beat = app.catalog.beat(id: clip.beatId)
         let active = app.activeClipID == clip.id
 
@@ -85,7 +85,7 @@ struct ForYouFeedView: View {
 
                 Spacer(minLength: 8)
 
-                VStack(spacing: 18) {
+                VStack(spacing: 10) {
                     actionButton(
                         systemImage: app.isClipLiked(clip.id) ? "heart.fill" : "heart",
                         label: compact(clip.likes + (app.isClipLiked(clip.id) ? 1 : 0)),
@@ -102,7 +102,7 @@ struct ForYouFeedView: View {
                 }
             }
             .padding(.horizontal, VeltaLayout.gutter(for: width))
-            .padding(.bottom, VeltaLayout.forYouOverlayBottom)
+            .padding(.bottom, VeltaLayout.forYouActionBottom(safeAreaBottom: bottomInset))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }
         .frame(width: size.width, height: size.height)

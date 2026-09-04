@@ -6,15 +6,15 @@ struct VeltaTabBar: View {
 
     var body: some View {
         HStack {
-            tabButton(.explore, icon: "play.fill")
+            tabButton(.explore, icon: "house.fill")
             tabButton(.search, icon: "magnifyingglass")
             tabButton(.cart, icon: "bag", badge: cartCount)
             tabButton(.library, icon: "heart")
             tabButton(.menu, icon: "line.3.horizontal")
         }
         .padding(.horizontal, 10)
-        .padding(.top, 10)
-        .padding(.bottom, 8)
+        .padding(.top, 8)
+        .padding(.bottom, 18)
         .background(VeltaTheme.ink.opacity(0.96))
         .overlay(alignment: .top) {
             Rectangle()
@@ -29,15 +29,9 @@ struct VeltaTabBar: View {
         } label: {
             ZStack(alignment: .topTrailing) {
                 Image(systemName: icon)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(selection == tab ? .white : .white.opacity(0.32))
                     .frame(width: 44, height: 44)
-                    .background {
-                        if selection == tab {
-                            Circle()
-                                .strokeBorder(Color.white, lineWidth: 1.5)
-                        }
-                    }
 
                 if badge > 0 {
                     Text(badge > 9 ? "9+" : "\(badge)")
@@ -58,7 +52,7 @@ struct VeltaTabBar: View {
 
     private func label(for tab: AppTab) -> String {
         switch tab {
-        case .explore: "Explore"
+        case .explore: "Home"
         case .search: "Search"
         case .cart: "Bag"
         case .library: "Library"
@@ -73,30 +67,18 @@ struct ExploreHeader: View {
     @Environment(\.veltaWidth) private var width
 
     var body: some View {
-        let side: CGFloat = width < 380 ? 44 : 108
-
-        HStack(spacing: 8) {
-            VeltaWordmark(markSize: 28, showsName: width >= 380)
-                .frame(width: side, alignment: .leading)
-
+        HStack {
             Text(title)
-                .font(.headline.weight(.bold))
+                .font(.title2.weight(.bold))
                 .foregroundStyle(.white)
                 .lineLimit(1)
-                .minimumScaleFactor(0.8)
-                .frame(maxWidth: .infinity)
-
-            Group {
-                if showsBell {
-                    Image(systemName: "bell")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 32, height: 32)
-                } else {
-                    Color.clear.frame(width: 32, height: 32)
-                }
+            Spacer(minLength: 8)
+            if showsBell {
+                Image(systemName: "bell")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 32, height: 32)
             }
-            .frame(width: side, alignment: .trailing)
         }
         .padding(.horizontal, VeltaLayout.gutter(for: width))
         .padding(.vertical, 10)

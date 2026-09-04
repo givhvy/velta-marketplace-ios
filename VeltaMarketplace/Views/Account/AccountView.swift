@@ -10,11 +10,16 @@ struct AccountView: View {
                 ExploreHeader(title: "Menu", showsBell: false)
 
                 HStack(spacing: 12) {
-                    VeltaMark(size: 52)
+                    Image(systemName: "person.fill")
+                        .font(.system(size: 22, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.9))
+                        .frame(width: 52, height: 52)
+                        .background(Color.white.opacity(0.08), in: Circle())
+                        .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Demo Buyer")
                             .font(.title3.weight(.semibold))
-                        Text(app.catalog.isLive ? "Connected to Velta store" : "Offline catalog")
+                        Text(app.catalog.isLive ? "Connected to store" : "Offline catalog")
                             .font(.caption)
                             .foregroundStyle(.white.opacity(0.5))
                     }
